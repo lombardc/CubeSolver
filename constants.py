@@ -92,23 +92,23 @@ LOWER_RED = [0, 130, 130]
 UPPER_RED = [10, 255, 196]
 
 # define range of green color in HSV Color Space
-LOWER_GREEN = [50, 210, 130]
-UPPER_GREEN = [80, 255, 195]
+LOWER_GREEN = [60, 200, 100]
+UPPER_GREEN = [80, 255, 255]
 
 # define range of blue color in HSV Color Space
-LOWER_BLUE = [94, 190, 100]
-UPPER_BLUE = [110, 255, 175]
+LOWER_BLUE = [90, 220, 80]
+UPPER_BLUE = [120, 255, 170]
 
 # define range of white color in HLS Color Space
-LOWER_WHITE = [70, 70, 30]
-UPPER_WHITE = [105, 150, 100]
+LOWER_WHITE = [80, 60, 20]
+UPPER_WHITE = [120, 150, 110]
 
 # define range of orange color in HLS Color Space
-LOWER_ORANGE = [10, 0, 0]
-UPPER_ORANGE = [30, 125, 255]
+LOWER_ORANGE = [10, 40, 200]
+UPPER_ORANGE = [30, 100, 255]
 
 # define range of yellow color in HSL Color Space
-LOWER_YELLOW = [25, 70, 110]
+LOWER_YELLOW = [30, 50, 160]
 UPPER_YELLOW = [50, 255, 255]
 
 # define the ROI size, in pixels

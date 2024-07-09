@@ -210,7 +210,7 @@ class MainWindow(QMainWindow):
         self.scramble_progress.setMaximum(1)
         self.scramble_progress.setValue(0)
         self.scramble_progress.setStyleSheet("QProgressBar::chunk {margin: 5px;}")
-        self.scramble_progress.setFixedHeight(35)
+        self.scramble_progress.setFixedHeight(30)
         self.scramble_progress.setFixedWidth(400)
         self.scramble_progress.setContentsMargins(0, 10, 0, 10)
         self.moves_tab.layout.addWidget(self.scramble_progress, 3, 2, 1, 4, alignment=Qt.AlignHCenter)
@@ -240,6 +240,7 @@ class MainWindow(QMainWindow):
 
         # Color recognition Button
         self.color_reco_button = QPushButton("Color Recognition")
+        self.color_reco_button.setFont(QFont('Arial', 20))
         self.color_reco_button.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Expanding)
         self.solver_tab.layout.addWidget(self.color_reco_button, 2, 14, 2, 2)
 
@@ -256,6 +257,7 @@ class MainWindow(QMainWindow):
 
         # Solving Button
         self.solve_button = QPushButton("Solve")
+        self.solve_button.setFont(QFont('Arial', 20))
         self.solve_button.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Expanding)
         self.solve_button.setEnabled(False)
         self.solver_tab.layout.addWidget(self.solve_button, 7, 14, 2, 2)

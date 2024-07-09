@@ -5,11 +5,12 @@
 #include <Adafruit_NeoPixel.h>
 #include <StringSplitter.h>
 
-#define LED_PIN_vert 30
-#define LED_PIN_jaune 34
-#define LED_PIN_rouge 28
-#define LED_PIN_bleu 29
-#define LED_PIN_orange 31
+#define LED_PIN_rouge 29
+#define LED_PIN_bleu 28
+#define LED_PIN_orange 30
+#define LED_PIN_vert 31
+#define LED_PIN_jaune 40
+
 #define LED_COUNT 48
 #define STEPS 800
 
@@ -41,42 +42,42 @@ String leds_b = "XXXXXXXX";
 String cube_string = "UUUUUUUUURRRRRRRRRFFFFFFFFFDDDDDDDDDLLLLLLLLLBBBBBBBBB";
 
 void setup()
-{  
+{
     rouge.setMaxSpeed(MOTOR_SPEED);
     rouge.setAcceleration(MOTOR_ACC);
     rouge.setEnablePin(22);
     rouge.setPinsInverted(false, false, true);
     rouge.disableOutputs();
     rouge.setCurrentPosition(0);
-    
+
     blanc.setMaxSpeed(MOTOR_SPEED);
     blanc.setAcceleration(MOTOR_ACC);
     blanc.setEnablePin(27);
     blanc.setPinsInverted(false, false, true);
     blanc.disableOutputs();
     blanc.setCurrentPosition(0);
-    
+
     orange.setMaxSpeed(MOTOR_SPEED);
-    orange.setAcceleration(MOTOR_ACC);  
+    orange.setAcceleration(MOTOR_ACC);
     orange.setEnablePin(26);
     orange.setPinsInverted(false, false, true);
-    orange.disableOutputs();  
+    orange.disableOutputs();
     orange.setCurrentPosition(0);
-    
+
     jaune.setMaxSpeed(MOTOR_SPEED);
     jaune.setAcceleration(MOTOR_ACC);
     jaune.setEnablePin(25);
     jaune.setPinsInverted(false, false, true);
     jaune.disableOutputs();
     jaune.setCurrentPosition(0);
-    
+
     vert.setMaxSpeed(MOTOR_SPEED);
     vert.setAcceleration(MOTOR_ACC);
     vert.setEnablePin(24);
     vert.setPinsInverted(false, false, true);
     vert.disableOutputs();
     vert.setCurrentPosition(0);
-    
+
     bleu.setMaxSpeed(MOTOR_SPEED);
     bleu.setAcceleration(MOTOR_ACC);
     bleu.setEnablePin(23);
@@ -84,29 +85,30 @@ void setup()
     bleu.disableOutputs();
     bleu.setCurrentPosition(0);
 
-    strip_vert.begin();         
+    strip_vert.begin();
     strip_vert.setBrightness(50);
-    strip_jaune.begin();          
+    strip_jaune.begin();
     strip_jaune.setBrightness(50);
-    strip_orange.begin();           
+    strip_orange.begin();
     strip_orange.setBrightness(50);
-    strip_rouge.begin();        
+    strip_rouge.begin();
     strip_rouge.setBrightness(50);
-    strip_bleu.begin();           
+    strip_bleu.begin();
     strip_bleu.setBrightness(50);
-    for(int i=0; i<LED_COUNT; i++) {
-        strip_vert.setPixelColor(i, 255, 0, 0);
-        strip_bleu.setPixelColor(i, 255, 0, 0);
-        strip_jaune.setPixelColor(i, 255, 0, 0);
-        strip_rouge.setPixelColor(i, 255, 0, 0);
-        strip_orange.setPixelColor(i, 255, 0, 0);
-    }
+    // for(int i=0; i<LED_COUNT; i++) {
+    //     strip_vert.setPixelColor(i, 255, 0, 0);
+    //     strip_bleu.setPixelColor(i, 255, 0, 0);
+    //     strip_jaune.setPixelColor(i, 255, 0, 0);
+    //     strip_rouge.setPixelColor(i, 255, 0, 0);
+    //     strip_orange.setPixelColor(i, 255, 0, 0);
+    // }
     strip_vert.show();
     strip_bleu.show();
     strip_rouge.show();
     strip_orange.show();
     strip_jaune.show();
     Serial3.begin(115200);
+    lights("SOLV");
 }
 
 

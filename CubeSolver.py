@@ -372,7 +372,7 @@ if __name__ == "__main__":
     splash.setEnabled(True)
     progressBar = QProgressBar(splash)
     progressBar.setMaximum(30)
-    progressBar.setGeometry(0, splash_pix.height() - 50, splash_pix.width(), 20)
+    progressBar.setGeometry(100, splash_pix.height() - 30, splash_pix.width() - 200, 20)
     splash.show()
 
     for i in range(1, 31):
