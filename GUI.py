@@ -43,7 +43,7 @@ class SolvingTimer(QWidget):
     @current_time_ms.setter
     def current_time_ms(self, val: int):
         self._current_time_ms = val
-        self.solved_timer.setText(str(self._current_time_ms / 1000))
+        self.solved_timer.setText("{:5.3f}".format(self._current_time_ms / 1000))
 
 
 class CubeFace(QLabel):
@@ -94,8 +94,8 @@ class CubeFace(QLabel):
 
 
 class MoveButton(QPushButton):
-    def __init__(self, name: str, row: int, col: int, icon_size: int = 90):
-        super(MoveButton, self).__init__()
+    def __init__(self, parent, name: str, row: int, col: int, icon_size: int = 90):
+        super(MoveButton, self).__init__(parent)
 
         self.icon_size = icon_size
         self.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Expanding)
@@ -190,22 +190,22 @@ class MainWindow(QMainWindow):
         # Move Buttons
         self.possible_moves = MOVES
         self.simple_move_group = QButtonGroup()
-        self.simple_move_group.setExclusive(True)
+        self.simple_move_group.setExclusive(False)
         for i, col in enumerate(self.possible_moves):
             for j, move in enumerate(col):
-                button = MoveButton(name=move, row=j, col=i)
-                self.moves_tab.layout.addWidget(button,
-                                                button.row,
-                                                button.col
+                b = MoveButton(parent=self.moves_tab, name=move, row=j, col=i)
+                self.moves_tab.layout.addWidget(b,
+                                                b.row,
+                                                b.col
                                                 )
-                self.simple_move_group.addButton(button)
+                self.simple_move_group.addButton(b)
 
         # Scramble Button
-        self.scramble = QPushButton("Random Scramble")
+        self.scramble = QPushButton("Random Scramble", self.moves_tab)
         self.moves_tab.layout.addWidget(self.scramble, 3, 0, 1, 2, Qt.AlignCenter)
 
         # Scramble Progress
-        self.scramble_progress = QProgressBar()
+        self.scramble_progress = QProgressBar(self.moves_tab)
         self.scramble_progress.setMinimum(0)
         self.scramble_progress.setMaximum(1)
         self.scramble_progress.setValue(0)

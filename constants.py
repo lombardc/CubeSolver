@@ -64,9 +64,9 @@ RECOGNITION_MOVES = [
     "D",
     "D2-B",
     "B",
-    "B2-U2-L2-L",
-    "L-U2-U-L2-L",
-    "L-U2-U-R-B2-B2-R2-D2",
+    "B2-U2-L'",
+    "L-U'-L'",
+    "L-U'-R'-D2",
     "D2-R"
 ]
 

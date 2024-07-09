@@ -11,7 +11,7 @@ import qdarktheme
 import serial
 from PyQt5 import QtCore
 from PyQt5.QtCore import QThreadPool, pyqtSignal, QTimer, Qt
-from PyQt5.QtGui import QPixmap
+from PyQt5.QtGui import QPixmap, QCursor
 from PyQt5.QtWidgets import QApplication, QSplashScreen, QProgressBar
 from QLed import QLed
 
@@ -228,6 +228,8 @@ class CubeSolver(MainWindow):
         self.threadpool.start(worker)
 
     def _init_solve_cube(self):
+        self.recognition_led.value = False
+        self.solve_button.setEnabled(False)
         self.solver_timer.current_time_ms = 0
         self.show_solve_timer()
         self._lock_all(True)
@@ -236,13 +238,13 @@ class CubeSolver(MainWindow):
         worker = Worker(self.Arduino.solve, self.cube_solution)
         worker.signals.finished.connect(self.solve_over)
 
-        self.solving_timer.singleShot(50, self.update_solver_timer)
+        self.solving_timer.singleShot(25, self.update_solver_timer)
         self.threadpool.start(worker)
 
     def update_solver_timer(self):
         if not self.Arduino.solve_over:
-            self.solver_timer.current_time_ms += 50
-            self.solving_timer.singleShot(50, self.update_solver_timer)
+            self.solver_timer.current_time_ms += 25
+            self.solving_timer.singleShot(25, self.update_solver_timer)
 
     def solve_over(self):
         self.solver_timer.current_time_ms = round(self.Arduino.solve_time, 3) * 1000
@@ -294,13 +296,13 @@ class CubeSolver(MainWindow):
             self.hide_timers()
 
     def _init_auto_scrambling(self):
-        self.hide_timers()
-        self._lock_all(True)
         scramble, s_len = self.scramble_generator.get_scramble()
+        self.hide_timers()
         self.scramble_progress.setMinimum(0)
         self.scramble_progress.setMaximum(s_len)
         self.scramble_progress.setValue(0)
         self.scramble_progress.setHidden(False)
+        self._lock_all(True)
         scrambler = Worker(self._auto_scrambling, scramble=scramble)
         scrambler.signals.progress.connect(self._update_scrambling_progress)
         scrambler.signals.finished.connect(self._scrambling_over)
@@ -325,8 +327,7 @@ class CubeSolver(MainWindow):
         self.scramble_progress.setHidden(True)
 
     def _lock_all(self, status: bool):
-        for move_button in self.simple_move_group.buttons():
-            move_button.setDisabled(status)
+        [x.setDisabled(status) for x in self.simple_move_group.buttons()]
         self.scramble.setDisabled(status)
         self.color_reco_button.setDisabled(status)
 
@@ -360,18 +361,21 @@ if __name__ == "__main__":
     App = QApplication(sys.argv)
     qdarktheme.setup_theme()
 
+    cursor = QCursor(Qt.BlankCursor)
+    QApplication.setOverrideCursor(cursor)
+    QApplication.changeOverrideCursor(cursor)
+
     # Create and display the splash screen
     splash_pix = QPixmap('assets/cube_solver.png')
-    print(splash_pix.height())
     splash = QSplashScreen(splash_pix, QtCore.Qt.WindowStaysOnTopHint)
     splash.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint | Qt.FramelessWindowHint)
     splash.setEnabled(True)
     progressBar = QProgressBar(splash)
-    progressBar.setMaximum(20)
+    progressBar.setMaximum(30)
     progressBar.setGeometry(0, splash_pix.height() - 50, splash_pix.width(), 20)
     splash.show()
 
-    for i in range(1, 21):
+    for i in range(1, 31):
        progressBar.setValue(i)
        t = time.time()
        while time.time() < t + 0.1:
