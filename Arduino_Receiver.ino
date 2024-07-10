@@ -27,7 +27,7 @@ Adafruit_NeoPixel strip_rouge(LED_COUNT, LED_PIN_rouge, NEO_GRB + NEO_KHZ800);
 Adafruit_NeoPixel strip_bleu(LED_COUNT, LED_PIN_bleu, NEO_GRB + NEO_KHZ800);
 Adafruit_NeoPixel strip_orange(LED_COUNT, LED_PIN_orange, NEO_GRB + NEO_KHZ800);
 
-float MOTOR_SPEED = 3800.0; //3500 // good lub, 5500
+float MOTOR_SPEED = 5000.0; //4000 // good lub, 5500
 float MOTOR_ACC = 200000;//200000.0;
 String OP_CODE;
 
@@ -95,13 +95,6 @@ void setup()
     strip_rouge.setBrightness(50);
     strip_bleu.begin();
     strip_bleu.setBrightness(50);
-    // for(int i=0; i<LED_COUNT; i++) {
-    //     strip_vert.setPixelColor(i, 255, 0, 0);
-    //     strip_bleu.setPixelColor(i, 255, 0, 0);
-    //     strip_jaune.setPixelColor(i, 255, 0, 0);
-    //     strip_rouge.setPixelColor(i, 255, 0, 0);
-    //     strip_orange.setPixelColor(i, 255, 0, 0);
-    // }
     strip_vert.show();
     strip_bleu.show();
     strip_rouge.show();
@@ -113,509 +106,723 @@ void setup()
 
 
 void leds_power(String OPCODE) {
-    strip_vert.setBrightness(OPCODE.toInt());        
-    strip_jaune.setBrightness(OPCODE.toInt());        
-    strip_orange.setBrightness(OPCODE.toInt());        
-    strip_rouge.setBrightness(OPCODE.toInt());             
-    strip_bleu.setBrightness(OPCODE.toInt());   
+    strip_vert.setBrightness(OPCODE.toInt());
+    strip_jaune.setBrightness(OPCODE.toInt());
+    strip_orange.setBrightness(OPCODE.toInt());
+    strip_rouge.setBrightness(OPCODE.toInt());
+    strip_bleu.setBrightness(OPCODE.toInt());
     strip_vert.show();
     strip_bleu.show();
     strip_rouge.show();
     strip_orange.show();
-    strip_jaune.show();     
+    strip_jaune.show();
+}
+// Define a type alias for rotation functions
+using RotateFunction = void (*)(String&);
+
+// Lookup table for rotation functions
+struct RotationMapping {
+  const char* command;
+  RotateFunction function;
+};
+
+
+void rotateU(String &cube_string) {
+  String temp = cube_string;
+  cube_string[18] = temp[9];
+  cube_string[19] = temp[10];
+  cube_string[20] = temp[11];
+
+  cube_string[36] = temp[18];
+  cube_string[37] = temp[19];
+  cube_string[38] = temp[20];
+
+  cube_string[45] = temp[36];
+  cube_string[46] = temp[37];
+  cube_string[47] = temp[38];
+
+  cube_string[9] = temp[45];
+  cube_string[10] = temp[46];
+  cube_string[11] = temp[47];
+
+  cube_string[0] = temp[6];
+  cube_string[1] = temp[3];
+  cube_string[2] = temp[0];
+  cube_string[3] = temp[7];
+  cube_string[5] = temp[1];
+  cube_string[6] = temp[8];
+  cube_string[7] = temp[5];
+  cube_string[8] = temp[2];
+  mirror_u(cube_string.substring(0, 9));
+  mirror_r(cube_string.substring(9, 18));
+  mirror_f(cube_string.substring(18, 27));
+  mirror_l(cube_string.substring(36, 45));
+  mirror_b(cube_string.substring(45));
+  show_led_strip(strip_jaune, leds_b);
+  show_led_strip(strip_orange, leds_l);
+  show_led_strip(strip_bleu, leds_u);
+  show_led_strip(strip_rouge, leds_r);
+}
+void rotateUPrime(String &cube_string) {
+  String temp = cube_string;
+  cube_string[18] = temp[36];
+  cube_string[19] = temp[37];
+  cube_string[20] = temp[38];
+
+  cube_string[36] = temp[45];
+  cube_string[37] = temp[46];
+  cube_string[38] = temp[47];
+
+  cube_string[45] = temp[9];
+  cube_string[46] = temp[10];
+  cube_string[47] = temp[11];
+
+  cube_string[9] = temp[18];
+  cube_string[10] = temp[19];
+  cube_string[11] = temp[20];
+
+  cube_string[0] = temp[2];
+  cube_string[1] = temp[5];
+  cube_string[2] = temp[8];
+  cube_string[3] = temp[1];
+  cube_string[5] = temp[7];
+  cube_string[6] = temp[0];
+  cube_string[7] = temp[3];
+  cube_string[8] = temp[6];
+  mirror_u(cube_string.substring(0, 9));
+  mirror_r(cube_string.substring(9, 18));
+  mirror_f(cube_string.substring(18, 27));
+  mirror_l(cube_string.substring(36, 45));
+  mirror_b(cube_string.substring(45));
+  show_led_strip(strip_jaune, leds_b);
+  show_led_strip(strip_orange, leds_l);
+  show_led_strip(strip_bleu, leds_u);
+  show_led_strip(strip_rouge, leds_r);
+}
+void rotateU2(String &cube_string) {
+  String temp = cube_string;
+  cube_string[18] = temp[45];
+  cube_string[19] = temp[46];
+  cube_string[20] = temp[47];
+
+  cube_string[36] = temp[9];
+  cube_string[37] = temp[10];
+  cube_string[38] = temp[11];
+
+  cube_string[45] = temp[18];
+  cube_string[46] = temp[19];
+  cube_string[47] = temp[20];
+
+  cube_string[9] = temp[36];
+  cube_string[10] = temp[37];
+  cube_string[11] = temp[38];
+
+  cube_string[8] = temp[0];
+  cube_string[7] = temp[1];
+  cube_string[6] = temp[2];
+  cube_string[5] = temp[3];
+  cube_string[3] = temp[5];
+  cube_string[2] = temp[6];
+  cube_string[1] = temp[7];
+  cube_string[0] = temp[8];
+  mirror_u(cube_string.substring(0, 9));
+  mirror_r(cube_string.substring(9, 18));
+  mirror_f(cube_string.substring(18, 27));
+  mirror_l(cube_string.substring(36, 45));
+  mirror_b(cube_string.substring(45));
+  show_led_strip(strip_jaune, leds_b);
+  show_led_strip(strip_orange, leds_l);
+  show_led_strip(strip_bleu, leds_u);
+  show_led_strip(strip_rouge, leds_r);
+}
+void rotateD(String &cube_string) {
+  String temp = cube_string;
+  cube_string[24] = temp[42];
+  cube_string[25] = temp[43];
+  cube_string[26] = temp[44];
+
+  cube_string[42] = temp[51];
+  cube_string[43] = temp[52];
+  cube_string[44] = temp[53];
+
+  cube_string[51] = temp[15];
+  cube_string[52] = temp[16];
+  cube_string[53] = temp[17];
+
+  cube_string[15] = temp[24];
+  cube_string[16] = temp[25];
+  cube_string[17] = temp[26];
+
+  cube_string[27] = temp[33];
+  cube_string[28] = temp[30];
+  cube_string[29] = temp[27];
+  cube_string[30] = temp[34];
+  cube_string[32] = temp[28];
+  cube_string[33] = temp[35];
+  cube_string[34] = temp[32];
+  cube_string[35] = temp[29];
+  mirror_r(cube_string.substring(9, 18));
+  mirror_f(cube_string.substring(18, 27));
+  mirror_d(cube_string.substring(27, 36));
+  mirror_l(cube_string.substring(36, 45));
+  mirror_b(cube_string.substring(45));
+  show_led_strip(strip_jaune, leds_b);
+  show_led_strip(strip_orange, leds_l);
+  show_led_strip(strip_vert, leds_d);
+  show_led_strip(strip_rouge, leds_r);
+}
+void rotateD2(String &cube_string) {
+  String temp = cube_string;
+  cube_string[24] = temp[51];
+  cube_string[25] = temp[52];
+  cube_string[26] = temp[53];
+
+  cube_string[42] = temp[15];
+  cube_string[43] = temp[16];
+  cube_string[44] = temp[17];
+
+  cube_string[51] = temp[24];
+  cube_string[52] = temp[25];
+  cube_string[53] = temp[26];
+
+  cube_string[15] = temp[42];
+  cube_string[16] = temp[43];
+  cube_string[17] = temp[44];
+
+  cube_string[27] = temp[35];
+  cube_string[28] = temp[34];
+  cube_string[29] = temp[33];
+  cube_string[30] = temp[32];
+  cube_string[32] = temp[30];
+  cube_string[33] = temp[29];
+  cube_string[34] = temp[28];
+  cube_string[35] = temp[27];
+  mirror_r(cube_string.substring(9, 18));
+  mirror_f(cube_string.substring(18, 27));
+  mirror_d(cube_string.substring(27, 36));
+  mirror_l(cube_string.substring(36, 45));
+  mirror_b(cube_string.substring(45));
+  show_led_strip(strip_jaune, leds_b);
+  show_led_strip(strip_orange, leds_l);
+  show_led_strip(strip_vert, leds_d);
+  show_led_strip(strip_rouge, leds_r);
+}
+void rotateDPrime(String &cube_string) {
+  String temp = cube_string;
+  cube_string[24] = temp[15];
+  cube_string[25] = temp[16];
+  cube_string[26] = temp[17];
+
+  cube_string[42] = temp[24];
+  cube_string[43] = temp[25];
+  cube_string[44] = temp[26];
+
+  cube_string[51] = temp[42];
+  cube_string[52] = temp[43];
+  cube_string[53] = temp[44];
+
+  cube_string[15] = temp[51];
+  cube_string[16] = temp[52];
+  cube_string[17] = temp[53];
+
+  cube_string[27] = temp[29];
+  cube_string[28] = temp[32];
+  cube_string[29] = temp[35];
+  cube_string[30] = temp[28];
+  cube_string[32] = temp[34];
+  cube_string[33] = temp[27];
+  cube_string[34] = temp[30];
+  cube_string[35] = temp[33];
+  mirror_r(cube_string.substring(9, 18));
+  mirror_f(cube_string.substring(18, 27));
+  mirror_d(cube_string.substring(27, 36));
+  mirror_l(cube_string.substring(36, 45));
+  mirror_b(cube_string.substring(45));
+  show_led_strip(strip_jaune, leds_b);
+  show_led_strip(strip_orange, leds_l);
+  show_led_strip(strip_vert, leds_d);
+  show_led_strip(strip_rouge, leds_r);
+}
+void rotateF(String &cube_string) {
+  String temp = cube_string;
+  cube_string[6] = temp[44];
+  cube_string[7] = temp[41];
+  cube_string[8] = temp[38];
+
+  cube_string[44] = temp[29];
+  cube_string[41] = temp[28];
+  cube_string[38] = temp[27];
+
+  cube_string[29] = temp[9];
+  cube_string[28] = temp[12];
+  cube_string[27] = temp[15];
+
+  cube_string[9] = temp[6];
+  cube_string[12] = temp[7];
+  cube_string[15] = temp[8];
+
+  cube_string[18] = temp[24];
+  cube_string[19] = temp[21];
+  cube_string[20] = temp[18];
+  cube_string[21] = temp[25];
+  cube_string[23] = temp[19];
+  cube_string[24] = temp[26];
+  cube_string[25] = temp[23];
+  cube_string[26] = temp[20];
+  mirror_u(cube_string.substring(0, 9));
+  mirror_r(cube_string.substring(9, 18));
+  mirror_f(cube_string.substring(18, 27));
+  mirror_d(cube_string.substring(27, 36));
+  mirror_l(cube_string.substring(36, 45));
+  show_led_strip(strip_orange, leds_l);
+  show_led_strip(strip_vert, leds_d);
+  show_led_strip(strip_bleu, leds_u);
+  show_led_strip(strip_rouge, leds_r);
+}
+void rotateFPrime(String &cube_string) {
+  String temp = cube_string;
+  cube_string[6] = temp[9];
+  cube_string[7] = temp[12];
+  cube_string[8] = temp[15];
+
+  cube_string[44] = temp[6];
+  cube_string[41] = temp[7];
+  cube_string[38] = temp[8];
+
+  cube_string[29] = temp[44];
+  cube_string[28] = temp[41];
+  cube_string[27] = temp[38];
+
+  cube_string[9] = temp[29];
+  cube_string[12] = temp[28];
+  cube_string[15] = temp[27];
+
+  cube_string[18] = temp[20];
+  cube_string[19] = temp[23];
+  cube_string[20] = temp[26];
+  cube_string[21] = temp[19];
+  cube_string[23] = temp[25];
+  cube_string[24] = temp[18];
+  cube_string[25] = temp[21];
+  cube_string[26] = temp[24];
+  mirror_u(cube_string.substring(0, 9));
+  mirror_r(cube_string.substring(9, 18));
+  mirror_f(cube_string.substring(18, 27));
+  mirror_d(cube_string.substring(27, 36));
+  mirror_l(cube_string.substring(36, 45));
+  show_led_strip(strip_orange, leds_l);
+  show_led_strip(strip_vert, leds_d);
+  show_led_strip(strip_bleu, leds_u);
+  show_led_strip(strip_rouge, leds_r);
+}
+void rotateF2(String &cube_string) {
+  String temp = cube_string;
+  cube_string[6] = temp[29];
+  cube_string[7] = temp[28];
+  cube_string[8] = temp[27];
+
+  cube_string[44] = temp[9];
+  cube_string[41] = temp[12];
+  cube_string[38] = temp[15];
+
+  cube_string[29] = temp[6];
+  cube_string[28] = temp[7];
+  cube_string[27] = temp[8];
+
+  cube_string[9] = temp[44];
+  cube_string[12] = temp[41];
+  cube_string[15] = temp[38];
+
+  cube_string[18] = temp[26];
+  cube_string[19] = temp[25];
+  cube_string[20] = temp[24];
+  cube_string[21] = temp[23];
+  cube_string[23] = temp[21];
+  cube_string[24] = temp[20];
+  cube_string[25] = temp[19];
+  cube_string[26] = temp[18];
+  mirror_u(cube_string.substring(0, 9));
+  mirror_r(cube_string.substring(9, 18));
+  mirror_f(cube_string.substring(18, 27));
+  mirror_d(cube_string.substring(27, 36));
+  mirror_l(cube_string.substring(36, 45));
+  show_led_strip(strip_orange, leds_l);
+  show_led_strip(strip_vert, leds_d);
+  show_led_strip(strip_bleu, leds_u);
+  show_led_strip(strip_rouge, leds_r);
+}
+void rotateB(String &cube_string) {
+  String temp = cube_string;
+  cube_string[0] = temp[11];
+  cube_string[1] = temp[14];
+  cube_string[2] = temp[17];
+
+  cube_string[11] = temp[35];
+  cube_string[14] = temp[34];
+  cube_string[17] = temp[33];
+
+  cube_string[35] = temp[42];
+  cube_string[34] = temp[39];
+  cube_string[33] = temp[36];
+
+  cube_string[42] = temp[0];
+  cube_string[39] = temp[1];
+  cube_string[36] = temp[2];
+
+  cube_string[45] = temp[51];
+  cube_string[46] = temp[48];
+  cube_string[47] = temp[45];
+  cube_string[48] = temp[52];
+  cube_string[50] = temp[46];
+  cube_string[51] = temp[53];
+  cube_string[52] = temp[50];
+  cube_string[53] = temp[47];
+  mirror_u(cube_string.substring(0, 9));
+  mirror_r(cube_string.substring(9, 18));
+  mirror_d(cube_string.substring(27, 36));
+  mirror_l(cube_string.substring(36, 45));
+  mirror_b(cube_string.substring(45));
+  show_led_strip(strip_jaune, leds_b);
+  show_led_strip(strip_orange, leds_l);
+  show_led_strip(strip_vert, leds_d);
+  show_led_strip(strip_bleu, leds_u);
+  show_led_strip(strip_rouge, leds_r);
+}
+void rotateBPrime(String &cube_string) {
+  String temp = cube_string;
+  cube_string[0] = temp[42];
+  cube_string[1] = temp[39];
+  cube_string[2] = temp[36];
+
+  cube_string[11] = temp[0];
+  cube_string[14] = temp[1];
+  cube_string[17] = temp[2];
+
+  cube_string[35] = temp[11];
+  cube_string[34] = temp[14];
+  cube_string[33] = temp[17];
+
+  cube_string[42] = temp[35];
+  cube_string[39] = temp[34];
+  cube_string[36] = temp[33];
+
+  cube_string[45] = temp[47];
+  cube_string[46] = temp[50];
+  cube_string[47] = temp[53];
+  cube_string[48] = temp[46];
+  cube_string[50] = temp[52];
+  cube_string[51] = temp[45];
+  cube_string[52] = temp[48];
+  cube_string[53] = temp[51];
+  mirror_u(cube_string.substring(0, 9));
+  mirror_r(cube_string.substring(9, 18));
+  mirror_d(cube_string.substring(27, 36));
+  mirror_l(cube_string.substring(36, 45));
+  mirror_b(cube_string.substring(45));
+  show_led_strip(strip_jaune, leds_b);
+  show_led_strip(strip_orange, leds_l);
+  show_led_strip(strip_vert, leds_d);
+  show_led_strip(strip_bleu, leds_u);
+  show_led_strip(strip_rouge, leds_r);
+}
+void rotateB2(String &cube_string) {
+  String temp = cube_string;
+  cube_string[0] = temp[35];
+  cube_string[1] = temp[34];
+  cube_string[2] = temp[33];
+
+  cube_string[11] = temp[42];
+  cube_string[14] = temp[39];
+  cube_string[17] = temp[36];
+
+  cube_string[35] = temp[0];
+  cube_string[34] = temp[1];
+  cube_string[33] = temp[2];
+
+  cube_string[42] = temp[11];
+  cube_string[39] = temp[14];
+  cube_string[36] = temp[17];
+
+  cube_string[45] = temp[53];
+  cube_string[46] = temp[52];
+  cube_string[47] = temp[51];
+  cube_string[48] = temp[50];
+  cube_string[50] = temp[48];
+  cube_string[51] = temp[47];
+  cube_string[52] = temp[46];
+  cube_string[53] = temp[45];
+  mirror_u(cube_string.substring(0, 9));
+  mirror_r(cube_string.substring(9, 18));
+  mirror_d(cube_string.substring(27, 36));
+  mirror_l(cube_string.substring(36, 45));
+  mirror_b(cube_string.substring(45));
+  show_led_strip(strip_jaune, leds_b);
+  show_led_strip(strip_orange, leds_l);
+  show_led_strip(strip_vert, leds_d);
+  show_led_strip(strip_bleu, leds_u);
+  show_led_strip(strip_rouge, leds_r);
+}
+void rotateR(String &cube_string) {
+  String temp = cube_string;
+  cube_string[20] = temp[29];
+  cube_string[23] = temp[32];
+  cube_string[26] = temp[35];
+
+  cube_string[29] = temp[51];
+  cube_string[32] = temp[48];
+  cube_string[35] = temp[45];
+
+  cube_string[51] = temp[2];
+  cube_string[48] = temp[5];
+  cube_string[45] = temp[8];
+
+  cube_string[2] = temp[20];
+  cube_string[5] = temp[23];
+  cube_string[8] = temp[26];
+
+  cube_string[9] = temp[15];
+  cube_string[10] = temp[12];
+  cube_string[11] = temp[9];
+  cube_string[12] = temp[16];
+  cube_string[14] = temp[10];
+  cube_string[15] = temp[17];
+  cube_string[16] = temp[14];
+  cube_string[17] = temp[11];
+  mirror_u(cube_string.substring(0, 9));
+  mirror_r(cube_string.substring(9, 18));
+  mirror_f(cube_string.substring(18, 27));
+  mirror_d(cube_string.substring(27, 36));
+  mirror_b(cube_string.substring(45));
+  show_led_strip(strip_jaune, leds_b);
+  show_led_strip(strip_vert, leds_d);
+  show_led_strip(strip_bleu, leds_u);
+  show_led_strip(strip_rouge, leds_r);
+}
+void rotateRPrime(String &cube_string) {
+  String temp = cube_string;
+  cube_string[20] = temp[2];
+  cube_string[23] = temp[5];
+  cube_string[26] = temp[8];
+
+  cube_string[29] = temp[20];
+  cube_string[32] = temp[23];
+  cube_string[35] = temp[26];
+
+  cube_string[51] = temp[29];
+  cube_string[48] = temp[32];
+  cube_string[45] = temp[35];
+
+  cube_string[2] = temp[51];
+  cube_string[5] = temp[48];
+  cube_string[8] = temp[45];
+
+  cube_string[9] = temp[11];
+  cube_string[10] = temp[14];
+  cube_string[11] = temp[17];
+  cube_string[12] = temp[10];
+  cube_string[14] = temp[16];
+  cube_string[15] = temp[9];
+  cube_string[16] = temp[12];
+  cube_string[17] = temp[15];
+  mirror_u(cube_string.substring(0, 9));
+  mirror_r(cube_string.substring(9, 18));
+  mirror_f(cube_string.substring(18, 27));
+  mirror_d(cube_string.substring(27, 36));
+  mirror_b(cube_string.substring(45));
+  show_led_strip(strip_jaune, leds_b);
+  show_led_strip(strip_vert, leds_d);
+  show_led_strip(strip_bleu, leds_u);
+  show_led_strip(strip_rouge, leds_r);
+}
+void rotateR2(String &cube_string) {
+  String temp = cube_string;
+  cube_string[20] = temp[51];
+  cube_string[23] = temp[48];
+  cube_string[26] = temp[45];
+
+  cube_string[29] = temp[2];
+  cube_string[32] = temp[5];
+  cube_string[35] = temp[8];
+
+  cube_string[51] = temp[20];
+  cube_string[48] = temp[23];
+  cube_string[45] = temp[26];
+
+  cube_string[2] = temp[29];
+  cube_string[5] = temp[32];
+  cube_string[8] = temp[35];
+
+  cube_string[9] = temp[17];
+  cube_string[10] = temp[16];
+  cube_string[11] = temp[15];
+  cube_string[12] = temp[14];
+  cube_string[14] = temp[12];
+  cube_string[15] = temp[11];
+  cube_string[16] = temp[10];
+  cube_string[17] = temp[9];
+  mirror_u(cube_string.substring(0, 9));
+  mirror_r(cube_string.substring(9, 18));
+  mirror_f(cube_string.substring(18, 27));
+  mirror_d(cube_string.substring(27, 36));
+  mirror_b(cube_string.substring(45));
+  show_led_strip(strip_jaune, leds_b);
+  show_led_strip(strip_vert, leds_d);
+  show_led_strip(strip_bleu, leds_u);
+  show_led_strip(strip_rouge, leds_r);
+}
+void rotateL(String &cube_string) {
+  String temp = cube_string;
+  cube_string[18] = temp[0];
+  cube_string[21] = temp[3];
+  cube_string[24] = temp[6];
+
+  cube_string[0] = temp[53];
+  cube_string[3] = temp[50];
+  cube_string[6] = temp[47];
+
+  cube_string[53] = temp[27];
+  cube_string[50] = temp[30];
+  cube_string[47] = temp[33];
+
+  cube_string[27] = temp[18];
+  cube_string[30] = temp[21];
+  cube_string[33] = temp[24];
+
+  cube_string[36] = temp[42];
+  cube_string[37] = temp[39];
+  cube_string[38] = temp[36];
+  cube_string[39] = temp[43];
+  cube_string[41] = temp[37];
+  cube_string[42] = temp[44];
+  cube_string[43] = temp[41];
+  cube_string[44] = temp[38];
+  mirror_u(cube_string.substring(0, 9));
+  mirror_f(cube_string.substring(18, 27));
+  mirror_d(cube_string.substring(27, 36));
+  mirror_l(cube_string.substring(36, 45));
+  mirror_b(cube_string.substring(45));
+  show_led_strip(strip_jaune, leds_b);
+  show_led_strip(strip_orange, leds_l);
+  show_led_strip(strip_vert, leds_d);
+  show_led_strip(strip_bleu, leds_u);
+}
+void rotateLPrime(String &cube_string) {
+  String temp = cube_string;
+  cube_string[18] = temp[27];
+  cube_string[21] = temp[30];
+  cube_string[24] = temp[33];
+
+  cube_string[0] = temp[18];
+  cube_string[3] = temp[21];
+  cube_string[6] = temp[24];
+
+  cube_string[53] = temp[0];
+  cube_string[50] = temp[3];
+  cube_string[47] = temp[6];
+
+  cube_string[27] = temp[53];
+  cube_string[30] = temp[50];
+  cube_string[33] = temp[47];
+
+  cube_string[36] = temp[38];
+  cube_string[37] = temp[41];
+  cube_string[38] = temp[44];
+  cube_string[39] = temp[37];
+  cube_string[41] = temp[43];
+  cube_string[42] = temp[36];
+  cube_string[43] = temp[39];
+  cube_string[44] = temp[42];
+  mirror_u(cube_string.substring(0, 9));
+  mirror_f(cube_string.substring(18, 27));
+  mirror_d(cube_string.substring(27, 36));
+  mirror_l(cube_string.substring(36, 45));
+  mirror_b(cube_string.substring(45));
+  show_led_strip(strip_jaune, leds_b);
+  show_led_strip(strip_orange, leds_l);
+  show_led_strip(strip_vert, leds_d);
+  show_led_strip(strip_bleu, leds_u);
+}
+void rotateL2(String &cube_string) {
+  String temp = cube_string;
+  cube_string[18] = temp[53];
+  cube_string[21] = temp[50];
+  cube_string[24] = temp[47];
+
+  cube_string[0] = temp[27];
+  cube_string[3] = temp[30];
+  cube_string[6] = temp[33];
+
+  cube_string[53] = temp[18];
+  cube_string[50] = temp[21];
+  cube_string[47] = temp[24];
+
+  cube_string[27] = temp[0];
+  cube_string[30] = temp[3];
+  cube_string[33] = temp[6];
+
+  cube_string[36] = temp[44];
+  cube_string[37] = temp[43];
+  cube_string[38] = temp[42];
+  cube_string[39] = temp[41];
+  cube_string[41] = temp[39];
+  cube_string[42] = temp[38];
+  cube_string[43] = temp[37];
+  cube_string[44] = temp[36];
+  mirror_u(cube_string.substring(0, 9));
+  mirror_f(cube_string.substring(18, 27));
+  mirror_d(cube_string.substring(27, 36));
+  mirror_l(cube_string.substring(36, 45));
+  mirror_b(cube_string.substring(45));
+  show_led_strip(strip_jaune, leds_b);
+  show_led_strip(strip_orange, leds_l);
+  show_led_strip(strip_vert, leds_d);
+  show_led_strip(strip_bleu, leds_u);
 }
 
+// Mapping from command strings to rotation functions
+RotationMapping rotationMappings[] = {
+  {"U", rotateU},
+  {"U'", rotateUPrime},
+  {"U2", rotateU2},
+  {"D", rotateD},
+  {"D'", rotateDPrime},
+  {"D2", rotateD2},
+  {"F", rotateF},
+  {"F'", rotateFPrime},
+  {"F2", rotateF2},
+  {"B", rotateB},
+  {"B'", rotateBPrime},
+  {"B2", rotateB2},
+  {"R", rotateR},
+  {"R'", rotateRPrime},
+  {"R2", rotateR2},
+  {"L", rotateL},
+  {"L'", rotateLPrime},
+  {"L2", rotateL2}
+};
 
-void sequence(String OPCODE, bool led_show){
-  StringSplitter *splitter = new StringSplitter(OPCODE, '-', 50);  // new StringSplitter(string_to_split, delimiter, limit)
+void sequence(String OPCODE, bool led_show) {
+  StringSplitter *splitter = new StringSplitter(OPCODE, '-', 50);
   int itemCount = splitter->getItemCount();
-  for(int i = 0; i < itemCount; i++){
+
+  for (int i = 0; i < itemCount; i++) {
     String item = splitter->getItemAtIndex(i);
     moveAxis(item);
-    if (led_show){
-        char temp_buffer[54];
-        strcpy(temp_buffer, cube_string.c_str());
-        String cube_temp = String(temp_buffer);
-        if (item=="U"){
-          cube_string[18] = cube_temp[9];
-          cube_string[19] = cube_temp[10];
-          cube_string[20] = cube_temp[11];
 
-          cube_string[36] = cube_temp[18];
-          cube_string[37] = cube_temp[19];
-          cube_string[38] = cube_temp[20];
-
-          cube_string[45] = cube_temp[36];
-          cube_string[46] = cube_temp[37];
-          cube_string[47] = cube_temp[38];
-
-          cube_string[9] = cube_temp[45];
-          cube_string[10] = cube_temp[46];
-          cube_string[11] = cube_temp[47];
-
-          cube_string[0] = cube_temp[6];
-          cube_string[1] = cube_temp[3];
-          cube_string[2] = cube_temp[0];
-          cube_string[3] = cube_temp[7];
-          cube_string[5] = cube_temp[1];
-          cube_string[6] = cube_temp[8];
-          cube_string[7] = cube_temp[5];
-          cube_string[8] = cube_temp[2];
+    if (led_show) {
+      for (const auto &mapping : rotationMappings) {
+        if (item == mapping.command) {
+          mapping.function(cube_string);
+          break; // Exit loop once function is found and called
         }
-        else if (item=="U'"){
-          cube_string[18] = cube_temp[36];
-          cube_string[19] = cube_temp[37];
-          cube_string[20] = cube_temp[38];
-
-          cube_string[36] = cube_temp[45];
-          cube_string[37] = cube_temp[46];
-          cube_string[38] = cube_temp[47];
-
-          cube_string[45] = cube_temp[9];
-          cube_string[46] = cube_temp[10];
-          cube_string[47] = cube_temp[11];
-
-          cube_string[9] = cube_temp[18];
-          cube_string[10] = cube_temp[19];
-          cube_string[11] = cube_temp[20];
-
-          cube_string[0] = cube_temp[2];
-          cube_string[1] = cube_temp[5];
-          cube_string[2] = cube_temp[8];
-          cube_string[3] = cube_temp[1];
-          cube_string[5] = cube_temp[7];
-          cube_string[6] = cube_temp[0];
-          cube_string[7] = cube_temp[3];
-          cube_string[8] = cube_temp[6];
-        }
-        else if (item=="U2"){
-          cube_string[18] = cube_temp[45];
-          cube_string[19] = cube_temp[46];
-          cube_string[20] = cube_temp[47];
-
-          cube_string[36] = cube_temp[9];
-          cube_string[37] = cube_temp[10];
-          cube_string[38] = cube_temp[11];
-
-          cube_string[45] = cube_temp[18];
-          cube_string[46] = cube_temp[19];
-          cube_string[47] = cube_temp[20];
-
-          cube_string[9] = cube_temp[36];
-          cube_string[10] = cube_temp[37];
-          cube_string[11] = cube_temp[38];
-
-          cube_string[8] = cube_temp[0];
-          cube_string[7] = cube_temp[1];
-          cube_string[6] = cube_temp[2];
-          cube_string[5] = cube_temp[3];
-          cube_string[3] = cube_temp[5];
-          cube_string[2] = cube_temp[6];
-          cube_string[1] = cube_temp[7];
-          cube_string[0] = cube_temp[8];
-        }
-        else if (item=="D"){
-          cube_string[24] = cube_temp[42];
-          cube_string[25] = cube_temp[43];
-          cube_string[26] = cube_temp[44];
-
-          cube_string[42] = cube_temp[51];
-          cube_string[43] = cube_temp[52];
-          cube_string[44] = cube_temp[53];
-
-          cube_string[51] = cube_temp[15];
-          cube_string[52] = cube_temp[16];
-          cube_string[53] = cube_temp[17];
-
-          cube_string[15] = cube_temp[24];
-          cube_string[16] = cube_temp[25];
-          cube_string[17] = cube_temp[26];
-
-          cube_string[27] = cube_temp[33];
-          cube_string[28] = cube_temp[30];
-          cube_string[29] = cube_temp[27];
-          cube_string[30] = cube_temp[34];
-          cube_string[32] = cube_temp[28];
-          cube_string[33] = cube_temp[35];
-          cube_string[34] = cube_temp[32];
-          cube_string[35] = cube_temp[29];
-        }
-        else if (item=="D'"){
-          cube_string[24] = cube_temp[15];
-          cube_string[25] = cube_temp[16];
-          cube_string[26] = cube_temp[17];
-
-          cube_string[42] = cube_temp[24];
-          cube_string[43] = cube_temp[25];
-          cube_string[44] = cube_temp[26];
-
-          cube_string[51] = cube_temp[42];
-          cube_string[52] = cube_temp[43];
-          cube_string[53] = cube_temp[44];
-
-          cube_string[15] = cube_temp[51];
-          cube_string[16] = cube_temp[52];
-          cube_string[17] = cube_temp[53];
-
-          cube_string[27] = cube_temp[29];
-          cube_string[28] = cube_temp[32];
-          cube_string[29] = cube_temp[35];
-          cube_string[30] = cube_temp[28];
-          cube_string[32] = cube_temp[34];
-          cube_string[33] = cube_temp[27];
-          cube_string[34] = cube_temp[30];
-          cube_string[35] = cube_temp[33];
-        }
-        else if (item=="D2"){
-          cube_string[24] = cube_temp[51];
-          cube_string[25] = cube_temp[52];
-          cube_string[26] = cube_temp[53];
-
-          cube_string[42] = cube_temp[15];
-          cube_string[43] = cube_temp[16];
-          cube_string[44] = cube_temp[17];
-
-          cube_string[51] = cube_temp[24];
-          cube_string[52] = cube_temp[25];
-          cube_string[53] = cube_temp[26];
-
-          cube_string[15] = cube_temp[42];
-          cube_string[16] = cube_temp[43];
-          cube_string[17] = cube_temp[44];
-
-          cube_string[27] = cube_temp[35];
-          cube_string[28] = cube_temp[34];
-          cube_string[29] = cube_temp[33];
-          cube_string[30] = cube_temp[32];
-          cube_string[32] = cube_temp[30];
-          cube_string[33] = cube_temp[29];
-          cube_string[34] = cube_temp[28];
-          cube_string[35] = cube_temp[27];
-        }
-        else if (item=="F"){
-          cube_string[6] = cube_temp[44];
-          cube_string[7] = cube_temp[41];
-          cube_string[8] = cube_temp[38];
-
-          cube_string[44] = cube_temp[29];
-          cube_string[41] = cube_temp[28];
-          cube_string[38] = cube_temp[27];
-
-          cube_string[29] = cube_temp[9];
-          cube_string[28] = cube_temp[12];
-          cube_string[27] = cube_temp[15];
-
-          cube_string[9] = cube_temp[6];
-          cube_string[12] = cube_temp[7];
-          cube_string[15] = cube_temp[8];
-
-          cube_string[18] = cube_temp[24];
-          cube_string[19] = cube_temp[21];
-          cube_string[20] = cube_temp[18];
-          cube_string[21] = cube_temp[25];
-          cube_string[23] = cube_temp[19];
-          cube_string[24] = cube_temp[26];
-          cube_string[25] = cube_temp[23];
-          cube_string[26] = cube_temp[20];
-        }
-        else if (item=="F'"){
-          cube_string[6] = cube_temp[9];
-          cube_string[7] = cube_temp[12];
-          cube_string[8] = cube_temp[15];
-
-          cube_string[44] = cube_temp[6];
-          cube_string[41] = cube_temp[7];
-          cube_string[38] = cube_temp[8];
-
-          cube_string[29] = cube_temp[44];
-          cube_string[28] = cube_temp[41];
-          cube_string[27] = cube_temp[38];
-
-          cube_string[9] = cube_temp[29];
-          cube_string[12] = cube_temp[28];
-          cube_string[15] = cube_temp[27];
-
-          cube_string[18] = cube_temp[20];
-          cube_string[19] = cube_temp[23];
-          cube_string[20] = cube_temp[26];
-          cube_string[21] = cube_temp[19];
-          cube_string[23] = cube_temp[25];
-          cube_string[24] = cube_temp[18];
-          cube_string[25] = cube_temp[21];
-          cube_string[26] = cube_temp[24];
-        }
-        else if (item=="F2"){
-          cube_string[6] = cube_temp[29];
-          cube_string[7] = cube_temp[28];
-          cube_string[8] = cube_temp[27];
-
-          cube_string[44] = cube_temp[9];
-          cube_string[41] = cube_temp[12];
-          cube_string[38] = cube_temp[15];
-
-          cube_string[29] = cube_temp[6];
-          cube_string[28] = cube_temp[7];
-          cube_string[27] = cube_temp[8];
-
-          cube_string[9] = cube_temp[44];
-          cube_string[12] = cube_temp[41];
-          cube_string[15] = cube_temp[38];
-
-          cube_string[18] = cube_temp[26];
-          cube_string[19] = cube_temp[25];
-          cube_string[20] = cube_temp[24];
-          cube_string[21] = cube_temp[23];
-          cube_string[23] = cube_temp[21];
-          cube_string[24] = cube_temp[20];
-          cube_string[25] = cube_temp[19];
-          cube_string[26] = cube_temp[18];
-        }
-        else if (item=="B"){
-          cube_string[0] = cube_temp[11];
-          cube_string[1] = cube_temp[14];
-          cube_string[2] = cube_temp[17];
-
-          cube_string[11] = cube_temp[35];
-          cube_string[14] = cube_temp[34];
-          cube_string[17] = cube_temp[33];
-
-          cube_string[35] = cube_temp[42];
-          cube_string[34] = cube_temp[39];
-          cube_string[33] = cube_temp[36];
-
-          cube_string[42] = cube_temp[0];
-          cube_string[39] = cube_temp[1];
-          cube_string[36] = cube_temp[2];
-
-          cube_string[45] = cube_temp[51];
-          cube_string[46] = cube_temp[48];
-          cube_string[47] = cube_temp[45];
-          cube_string[48] = cube_temp[52];
-          cube_string[50] = cube_temp[46];
-          cube_string[51] = cube_temp[53];
-          cube_string[52] = cube_temp[50];
-          cube_string[53] = cube_temp[47];
-        }
-        else if (item=="B'"){
-          cube_string[0] = cube_temp[42];
-          cube_string[1] = cube_temp[39];
-          cube_string[2] = cube_temp[36];
-
-          cube_string[11] = cube_temp[0];
-          cube_string[14] = cube_temp[1];
-          cube_string[17] = cube_temp[2];
-
-          cube_string[35] = cube_temp[11];
-          cube_string[34] = cube_temp[14];
-          cube_string[33] = cube_temp[17];
-
-          cube_string[42] = cube_temp[35];
-          cube_string[39] = cube_temp[34];
-          cube_string[36] = cube_temp[33];
-
-          cube_string[45] = cube_temp[47];
-          cube_string[46] = cube_temp[50];
-          cube_string[47] = cube_temp[53];
-          cube_string[48] = cube_temp[46];
-          cube_string[50] = cube_temp[52];
-          cube_string[51] = cube_temp[45];
-          cube_string[52] = cube_temp[48];
-          cube_string[53] = cube_temp[51];
-        }
-        else if (item=="B2"){
-          cube_string[0] = cube_temp[35];
-          cube_string[1] = cube_temp[34];
-          cube_string[2] = cube_temp[33];
-
-          cube_string[11] = cube_temp[42];
-          cube_string[14] = cube_temp[39];
-          cube_string[17] = cube_temp[36];
-
-          cube_string[35] = cube_temp[0];
-          cube_string[34] = cube_temp[1];
-          cube_string[33] = cube_temp[2];
-
-          cube_string[42] = cube_temp[11];
-          cube_string[39] = cube_temp[14];
-          cube_string[36] = cube_temp[17];
-
-          cube_string[45] = cube_temp[53];
-          cube_string[46] = cube_temp[52];
-          cube_string[47] = cube_temp[51];
-          cube_string[48] = cube_temp[50];
-          cube_string[50] = cube_temp[48];
-          cube_string[51] = cube_temp[47];
-          cube_string[52] = cube_temp[46];
-          cube_string[53] = cube_temp[45];
-        }
-        else if (item=="R"){
-          cube_string[20] = cube_temp[29];
-          cube_string[23] = cube_temp[32];
-          cube_string[26] = cube_temp[35];
-
-          cube_string[29] = cube_temp[51];
-          cube_string[32] = cube_temp[48];
-          cube_string[35] = cube_temp[45];
-
-          cube_string[51] = cube_temp[2];
-          cube_string[48] = cube_temp[5];
-          cube_string[45] = cube_temp[8];
-
-          cube_string[2] = cube_temp[20];
-          cube_string[5] = cube_temp[23];
-          cube_string[8] = cube_temp[26];
-
-          cube_string[9] = cube_temp[15];
-          cube_string[10] = cube_temp[12];
-          cube_string[11] = cube_temp[9];
-          cube_string[12] = cube_temp[16];
-          cube_string[14] = cube_temp[10];
-          cube_string[15] = cube_temp[17];
-          cube_string[16] = cube_temp[14];
-          cube_string[17] = cube_temp[11];
-        }
-        else if (item=="R'"){
-          cube_string[20] = cube_temp[2];
-          cube_string[23] = cube_temp[5];
-          cube_string[26] = cube_temp[8];
-
-          cube_string[29] = cube_temp[20];
-          cube_string[32] = cube_temp[23];
-          cube_string[35] = cube_temp[26];
-
-          cube_string[51] = cube_temp[29];
-          cube_string[48] = cube_temp[32];
-          cube_string[45] = cube_temp[35];
-
-          cube_string[2] = cube_temp[51];
-          cube_string[5] = cube_temp[48];
-          cube_string[8] = cube_temp[45];
-
-          cube_string[9] = cube_temp[11];
-          cube_string[10] = cube_temp[14];
-          cube_string[11] = cube_temp[17];
-          cube_string[12] = cube_temp[10];
-          cube_string[14] = cube_temp[16];
-          cube_string[15] = cube_temp[9];
-          cube_string[16] = cube_temp[12];
-          cube_string[17] = cube_temp[15];
-        }
-        else if (item=="R2"){
-          cube_string[20] = cube_temp[51];
-          cube_string[23] = cube_temp[48];
-          cube_string[26] = cube_temp[45];
-
-          cube_string[29] = cube_temp[2];
-          cube_string[32] = cube_temp[5];
-          cube_string[35] = cube_temp[8];
-
-          cube_string[51] = cube_temp[20];
-          cube_string[48] = cube_temp[23];
-          cube_string[45] = cube_temp[26];
-
-          cube_string[2] = cube_temp[29];
-          cube_string[5] = cube_temp[32];
-          cube_string[8] = cube_temp[35];
-
-          cube_string[9] = cube_temp[17];
-          cube_string[10] = cube_temp[16];
-          cube_string[11] = cube_temp[15];
-          cube_string[12] = cube_temp[14];
-          cube_string[14] = cube_temp[12];
-          cube_string[15] = cube_temp[11];
-          cube_string[16] = cube_temp[10];
-          cube_string[17] = cube_temp[9];
-        }
-        else if (item=="L"){
-          cube_string[18] = cube_temp[0];
-          cube_string[21] = cube_temp[3];
-          cube_string[24] = cube_temp[6];
-
-          cube_string[0] = cube_temp[53];
-          cube_string[3] = cube_temp[50];
-          cube_string[6] = cube_temp[47];
-
-          cube_string[53] = cube_temp[27];
-          cube_string[50] = cube_temp[30];
-          cube_string[47] = cube_temp[33];
-
-          cube_string[27] = cube_temp[18];
-          cube_string[30] = cube_temp[21];
-          cube_string[33] = cube_temp[24];
-
-          cube_string[36] = cube_temp[42];
-          cube_string[37] = cube_temp[39];
-          cube_string[38] = cube_temp[36];
-          cube_string[39] = cube_temp[43];
-          cube_string[41] = cube_temp[37];
-          cube_string[42] = cube_temp[44];
-          cube_string[43] = cube_temp[41];
-          cube_string[44] = cube_temp[38];
-        }
-        else if (item=="L'"){
-          cube_string[18] = cube_temp[27];
-          cube_string[21] = cube_temp[30];
-          cube_string[24] = cube_temp[33];
-
-          cube_string[0] = cube_temp[18];
-          cube_string[3] = cube_temp[21];
-          cube_string[6] = cube_temp[24];
-
-          cube_string[53] = cube_temp[0];
-          cube_string[50] = cube_temp[3];
-          cube_string[47] = cube_temp[6];
-
-          cube_string[27] = cube_temp[53];
-          cube_string[30] = cube_temp[50];
-          cube_string[33] = cube_temp[47];
-
-          cube_string[36] = cube_temp[38];
-          cube_string[37] = cube_temp[41];
-          cube_string[38] = cube_temp[44];
-          cube_string[39] = cube_temp[37];
-          cube_string[41] = cube_temp[43];
-          cube_string[42] = cube_temp[36];
-          cube_string[43] = cube_temp[39];
-          cube_string[44] = cube_temp[42];
-        }
-        else if (item=="L2"){
-          cube_string[18] = cube_temp[53];
-          cube_string[21] = cube_temp[50];
-          cube_string[24] = cube_temp[47];
-
-          cube_string[0] = cube_temp[27];
-          cube_string[3] = cube_temp[30];
-          cube_string[6] = cube_temp[33];
-
-          cube_string[53] = cube_temp[18];
-          cube_string[50] = cube_temp[21];
-          cube_string[47] = cube_temp[24];
-
-          cube_string[27] = cube_temp[0];
-          cube_string[30] = cube_temp[3];
-          cube_string[33] = cube_temp[6];
-
-          cube_string[36] = cube_temp[44];
-          cube_string[37] = cube_temp[43];
-          cube_string[38] = cube_temp[42];
-          cube_string[39] = cube_temp[41];
-          cube_string[41] = cube_temp[39];
-          cube_string[42] = cube_temp[38];
-          cube_string[43] = cube_temp[37];
-          cube_string[44] = cube_temp[36];
-        }
-        mirror_u(cube_string.substring(0,9));
-        mirror_r(cube_string.substring(9,18));
-        mirror_f(cube_string.substring(18,27));
-        mirror_d(cube_string.substring(27,36));
-        mirror_l(cube_string.substring(36,45));
-        mirror_b(cube_string.substring(45));
+      }
     }
-
   }
+
   delete splitter;
   splitter = NULL;
 }
+
 
 void show_led_strip(Adafruit_NeoPixel& strip, const String& leds) {
     constexpr int LEDS_PER_FACE = 6;
@@ -661,7 +868,6 @@ void mirror_u(String OPCODE){
     leds_u[5] = OPCODE[3];
     leds_u[6] = OPCODE[0];
     leds_u[7] = OPCODE[1];
-    show_led_strip(strip_bleu, leds_u);
 }
 void mirror_d(String OPCODE){
     leds_d[0] = OPCODE[6];
@@ -672,7 +878,6 @@ void mirror_d(String OPCODE){
     leds_d[5] = OPCODE[5];
     leds_d[6] = OPCODE[8];
     leds_d[7] = OPCODE[7];
-    show_led_strip(strip_vert, leds_d);
 }
 void mirror_r(String OPCODE){
     leds_r[0] = OPCODE[2];
@@ -683,7 +888,6 @@ void mirror_r(String OPCODE){
     leds_r[5] = OPCODE[7];
     leds_r[6] = OPCODE[8];
     leds_r[7] = OPCODE[5];
-    show_led_strip(strip_rouge, leds_r);
 }
 void mirror_l(String OPCODE){
     leds_l[0] = OPCODE[8];
@@ -694,7 +898,6 @@ void mirror_l(String OPCODE){
     leds_l[5] = OPCODE[3];
     leds_l[6] = OPCODE[6];
     leds_l[7] = OPCODE[7];
-    show_led_strip(strip_orange, leds_l);
 }
 void mirror_b(String OPCODE){
     leds_b[0] = OPCODE[8];
@@ -705,7 +908,6 @@ void mirror_b(String OPCODE){
     leds_b[5] = OPCODE[1];
     leds_b[6] = OPCODE[2];
     leds_b[7] = OPCODE[5];
-    show_led_strip(strip_jaune, leds_b);
 }
 
 
@@ -728,6 +930,16 @@ void lights(String OPCODE) {
             strip_jaune.setPixelColor(i, 255, 255, 0);
             strip_rouge.setPixelColor(i, 255, 0, 0);
             strip_orange.setPixelColor(i, 255, 100, 0);
+        }
+    }
+    else if (OPCODE == "FLAS")
+    {
+        for(int i=0; i<LED_COUNT; i++) {
+            strip_vert.setPixelColor(i, 0, 0, 255);
+            strip_bleu.setPixelColor(i, 0, 0, 255);
+            strip_jaune.setPixelColor(i, 0, 0, 255);
+            strip_rouge.setPixelColor(i, 0, 0, 255);
+            strip_orange.setPixelColor(i, 0, 0, 255);
         }
     }
         else if (OPCODE == "CALI")
@@ -810,6 +1022,11 @@ void serial_switch(String OP_CODE){
       mirror_d(OP_CODE.substring(32,41));
       mirror_l(OP_CODE.substring(41,50));
       mirror_b(OP_CODE.substring(50));
+      show_led_strip(strip_jaune, leds_b);
+      show_led_strip(strip_orange, leds_l);
+      show_led_strip(strip_vert, leds_d);
+      show_led_strip(strip_bleu, leds_u);
+      show_led_strip(strip_rouge, leds_r);
   }
   Serial3.println("OK");
   Serial3.flush();
