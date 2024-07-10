@@ -129,7 +129,6 @@ void leds_power(String OPCODE) {
 void sequence(String OPCODE, bool led_show){
   StringSplitter *splitter = new StringSplitter(OPCODE, '-', 50);  // new StringSplitter(string_to_split, delimiter, limit)
   int itemCount = splitter->getItemCount();
-  
   for(int i = 0; i < itemCount; i++){
     String item = splitter->getItemAtIndex(i);
     moveAxis(item);
@@ -141,15 +140,15 @@ void sequence(String OPCODE, bool led_show){
           cube_string[18] = cube_temp[9];
           cube_string[19] = cube_temp[10];
           cube_string[20] = cube_temp[11];
-          
+
           cube_string[36] = cube_temp[18];
           cube_string[37] = cube_temp[19];
           cube_string[38] = cube_temp[20];
-          
+
           cube_string[45] = cube_temp[36];
           cube_string[46] = cube_temp[37];
           cube_string[47] = cube_temp[38];
-          
+
           cube_string[9] = cube_temp[45];
           cube_string[10] = cube_temp[46];
           cube_string[11] = cube_temp[47];
@@ -167,15 +166,15 @@ void sequence(String OPCODE, bool led_show){
           cube_string[18] = cube_temp[36];
           cube_string[19] = cube_temp[37];
           cube_string[20] = cube_temp[38];
-          
+
           cube_string[36] = cube_temp[45];
           cube_string[37] = cube_temp[46];
           cube_string[38] = cube_temp[47];
-          
+
           cube_string[45] = cube_temp[9];
           cube_string[46] = cube_temp[10];
           cube_string[47] = cube_temp[11];
-          
+
           cube_string[9] = cube_temp[18];
           cube_string[10] = cube_temp[19];
           cube_string[11] = cube_temp[20];
@@ -193,19 +192,19 @@ void sequence(String OPCODE, bool led_show){
           cube_string[18] = cube_temp[45];
           cube_string[19] = cube_temp[46];
           cube_string[20] = cube_temp[47];
-          
+
           cube_string[36] = cube_temp[9];
           cube_string[37] = cube_temp[10];
           cube_string[38] = cube_temp[11];
-          
+
           cube_string[45] = cube_temp[18];
           cube_string[46] = cube_temp[19];
           cube_string[47] = cube_temp[20];
-          
+
           cube_string[9] = cube_temp[36];
           cube_string[10] = cube_temp[37];
           cube_string[11] = cube_temp[38];
-          
+
           cube_string[8] = cube_temp[0];
           cube_string[7] = cube_temp[1];
           cube_string[6] = cube_temp[2];
@@ -215,24 +214,23 @@ void sequence(String OPCODE, bool led_show){
           cube_string[1] = cube_temp[7];
           cube_string[0] = cube_temp[8];
         }
-        // ##### D ######
         else if (item=="D"){
           cube_string[24] = cube_temp[42];
           cube_string[25] = cube_temp[43];
           cube_string[26] = cube_temp[44];
-          
+
           cube_string[42] = cube_temp[51];
           cube_string[43] = cube_temp[52];
           cube_string[44] = cube_temp[53];
-          
+
           cube_string[51] = cube_temp[15];
           cube_string[52] = cube_temp[16];
           cube_string[53] = cube_temp[17];
-          
+
           cube_string[15] = cube_temp[24];
           cube_string[16] = cube_temp[25];
           cube_string[17] = cube_temp[26];
-          
+
           cube_string[27] = cube_temp[33];
           cube_string[28] = cube_temp[30];
           cube_string[29] = cube_temp[27];
@@ -246,19 +244,19 @@ void sequence(String OPCODE, bool led_show){
           cube_string[24] = cube_temp[15];
           cube_string[25] = cube_temp[16];
           cube_string[26] = cube_temp[17];
-          
+
           cube_string[42] = cube_temp[24];
           cube_string[43] = cube_temp[25];
           cube_string[44] = cube_temp[26];
-          
+
           cube_string[51] = cube_temp[42];
           cube_string[52] = cube_temp[43];
           cube_string[53] = cube_temp[44];
-          
+
           cube_string[15] = cube_temp[51];
           cube_string[16] = cube_temp[52];
           cube_string[17] = cube_temp[53];
-          
+
           cube_string[27] = cube_temp[29];
           cube_string[28] = cube_temp[32];
           cube_string[29] = cube_temp[35];
@@ -272,19 +270,19 @@ void sequence(String OPCODE, bool led_show){
           cube_string[24] = cube_temp[51];
           cube_string[25] = cube_temp[52];
           cube_string[26] = cube_temp[53];
-          
+
           cube_string[42] = cube_temp[15];
           cube_string[43] = cube_temp[16];
           cube_string[44] = cube_temp[17];
-          
+
           cube_string[51] = cube_temp[24];
           cube_string[52] = cube_temp[25];
           cube_string[53] = cube_temp[26];
-          
+
           cube_string[15] = cube_temp[42];
           cube_string[16] = cube_temp[43];
           cube_string[17] = cube_temp[44];
-          
+
           cube_string[27] = cube_temp[35];
           cube_string[28] = cube_temp[34];
           cube_string[29] = cube_temp[33];
@@ -298,19 +296,19 @@ void sequence(String OPCODE, bool led_show){
           cube_string[6] = cube_temp[44];
           cube_string[7] = cube_temp[41];
           cube_string[8] = cube_temp[38];
-          
+
           cube_string[44] = cube_temp[29];
           cube_string[41] = cube_temp[28];
           cube_string[38] = cube_temp[27];
-          
+
           cube_string[29] = cube_temp[9];
           cube_string[28] = cube_temp[12];
           cube_string[27] = cube_temp[15];
-          
+
           cube_string[9] = cube_temp[6];
           cube_string[12] = cube_temp[7];
           cube_string[15] = cube_temp[8];
-          
+
           cube_string[18] = cube_temp[24];
           cube_string[19] = cube_temp[21];
           cube_string[20] = cube_temp[18];
@@ -324,19 +322,19 @@ void sequence(String OPCODE, bool led_show){
           cube_string[6] = cube_temp[9];
           cube_string[7] = cube_temp[12];
           cube_string[8] = cube_temp[15];
-          
+
           cube_string[44] = cube_temp[6];
           cube_string[41] = cube_temp[7];
           cube_string[38] = cube_temp[8];
-          
+
           cube_string[29] = cube_temp[44];
           cube_string[28] = cube_temp[41];
           cube_string[27] = cube_temp[38];
-          
+
           cube_string[9] = cube_temp[29];
           cube_string[12] = cube_temp[28];
           cube_string[15] = cube_temp[27];
-          
+
           cube_string[18] = cube_temp[20];
           cube_string[19] = cube_temp[23];
           cube_string[20] = cube_temp[26];
@@ -350,19 +348,19 @@ void sequence(String OPCODE, bool led_show){
           cube_string[6] = cube_temp[29];
           cube_string[7] = cube_temp[28];
           cube_string[8] = cube_temp[27];
-          
+
           cube_string[44] = cube_temp[9];
           cube_string[41] = cube_temp[12];
           cube_string[38] = cube_temp[15];
-          
+
           cube_string[29] = cube_temp[6];
           cube_string[28] = cube_temp[7];
           cube_string[27] = cube_temp[8];
-          
+
           cube_string[9] = cube_temp[44];
           cube_string[12] = cube_temp[41];
           cube_string[15] = cube_temp[38];
-          
+
           cube_string[18] = cube_temp[26];
           cube_string[19] = cube_temp[25];
           cube_string[20] = cube_temp[24];
@@ -376,19 +374,19 @@ void sequence(String OPCODE, bool led_show){
           cube_string[0] = cube_temp[11];
           cube_string[1] = cube_temp[14];
           cube_string[2] = cube_temp[17];
-          
+
           cube_string[11] = cube_temp[35];
           cube_string[14] = cube_temp[34];
           cube_string[17] = cube_temp[33];
-          
+
           cube_string[35] = cube_temp[42];
           cube_string[34] = cube_temp[39];
           cube_string[33] = cube_temp[36];
-          
+
           cube_string[42] = cube_temp[0];
           cube_string[39] = cube_temp[1];
           cube_string[36] = cube_temp[2];
-          
+
           cube_string[45] = cube_temp[51];
           cube_string[46] = cube_temp[48];
           cube_string[47] = cube_temp[45];
@@ -402,19 +400,19 @@ void sequence(String OPCODE, bool led_show){
           cube_string[0] = cube_temp[42];
           cube_string[1] = cube_temp[39];
           cube_string[2] = cube_temp[36];
-          
+
           cube_string[11] = cube_temp[0];
           cube_string[14] = cube_temp[1];
           cube_string[17] = cube_temp[2];
-          
+
           cube_string[35] = cube_temp[11];
           cube_string[34] = cube_temp[14];
           cube_string[33] = cube_temp[17];
-          
+
           cube_string[42] = cube_temp[35];
           cube_string[39] = cube_temp[34];
           cube_string[36] = cube_temp[33];
-          
+
           cube_string[45] = cube_temp[47];
           cube_string[46] = cube_temp[50];
           cube_string[47] = cube_temp[53];
@@ -428,19 +426,19 @@ void sequence(String OPCODE, bool led_show){
           cube_string[0] = cube_temp[35];
           cube_string[1] = cube_temp[34];
           cube_string[2] = cube_temp[33];
-          
+
           cube_string[11] = cube_temp[42];
           cube_string[14] = cube_temp[39];
           cube_string[17] = cube_temp[36];
-          
+
           cube_string[35] = cube_temp[0];
           cube_string[34] = cube_temp[1];
           cube_string[33] = cube_temp[2];
-          
+
           cube_string[42] = cube_temp[11];
           cube_string[39] = cube_temp[14];
           cube_string[36] = cube_temp[17];
-          
+
           cube_string[45] = cube_temp[53];
           cube_string[46] = cube_temp[52];
           cube_string[47] = cube_temp[51];
@@ -454,19 +452,19 @@ void sequence(String OPCODE, bool led_show){
           cube_string[20] = cube_temp[29];
           cube_string[23] = cube_temp[32];
           cube_string[26] = cube_temp[35];
-          
+
           cube_string[29] = cube_temp[51];
           cube_string[32] = cube_temp[48];
           cube_string[35] = cube_temp[45];
-          
+
           cube_string[51] = cube_temp[2];
           cube_string[48] = cube_temp[5];
           cube_string[45] = cube_temp[8];
-          
+
           cube_string[2] = cube_temp[20];
           cube_string[5] = cube_temp[23];
           cube_string[8] = cube_temp[26];
-          
+
           cube_string[9] = cube_temp[15];
           cube_string[10] = cube_temp[12];
           cube_string[11] = cube_temp[9];
@@ -480,19 +478,19 @@ void sequence(String OPCODE, bool led_show){
           cube_string[20] = cube_temp[2];
           cube_string[23] = cube_temp[5];
           cube_string[26] = cube_temp[8];
-          
+
           cube_string[29] = cube_temp[20];
           cube_string[32] = cube_temp[23];
           cube_string[35] = cube_temp[26];
-          
+
           cube_string[51] = cube_temp[29];
           cube_string[48] = cube_temp[32];
           cube_string[45] = cube_temp[35];
-          
+
           cube_string[2] = cube_temp[51];
           cube_string[5] = cube_temp[48];
           cube_string[8] = cube_temp[45];
-          
+
           cube_string[9] = cube_temp[11];
           cube_string[10] = cube_temp[14];
           cube_string[11] = cube_temp[17];
@@ -506,19 +504,19 @@ void sequence(String OPCODE, bool led_show){
           cube_string[20] = cube_temp[51];
           cube_string[23] = cube_temp[48];
           cube_string[26] = cube_temp[45];
-          
+
           cube_string[29] = cube_temp[2];
           cube_string[32] = cube_temp[5];
           cube_string[35] = cube_temp[8];
-          
+
           cube_string[51] = cube_temp[20];
           cube_string[48] = cube_temp[23];
           cube_string[45] = cube_temp[26];
-          
+
           cube_string[2] = cube_temp[29];
           cube_string[5] = cube_temp[32];
           cube_string[8] = cube_temp[35];
-          
+
           cube_string[9] = cube_temp[17];
           cube_string[10] = cube_temp[16];
           cube_string[11] = cube_temp[15];
@@ -532,19 +530,19 @@ void sequence(String OPCODE, bool led_show){
           cube_string[18] = cube_temp[0];
           cube_string[21] = cube_temp[3];
           cube_string[24] = cube_temp[6];
-          
+
           cube_string[0] = cube_temp[53];
           cube_string[3] = cube_temp[50];
           cube_string[6] = cube_temp[47];
-          
+
           cube_string[53] = cube_temp[27];
           cube_string[50] = cube_temp[30];
           cube_string[47] = cube_temp[33];
-          
+
           cube_string[27] = cube_temp[18];
           cube_string[30] = cube_temp[21];
           cube_string[33] = cube_temp[24];
-          
+
           cube_string[36] = cube_temp[42];
           cube_string[37] = cube_temp[39];
           cube_string[38] = cube_temp[36];
@@ -558,19 +556,19 @@ void sequence(String OPCODE, bool led_show){
           cube_string[18] = cube_temp[27];
           cube_string[21] = cube_temp[30];
           cube_string[24] = cube_temp[33];
-          
+
           cube_string[0] = cube_temp[18];
           cube_string[3] = cube_temp[21];
           cube_string[6] = cube_temp[24];
-          
+
           cube_string[53] = cube_temp[0];
           cube_string[50] = cube_temp[3];
           cube_string[47] = cube_temp[6];
-          
+
           cube_string[27] = cube_temp[53];
           cube_string[30] = cube_temp[50];
           cube_string[33] = cube_temp[47];
-          
+
           cube_string[36] = cube_temp[38];
           cube_string[37] = cube_temp[41];
           cube_string[38] = cube_temp[44];
@@ -584,19 +582,19 @@ void sequence(String OPCODE, bool led_show){
           cube_string[18] = cube_temp[53];
           cube_string[21] = cube_temp[50];
           cube_string[24] = cube_temp[47];
-          
+
           cube_string[0] = cube_temp[27];
           cube_string[3] = cube_temp[30];
           cube_string[6] = cube_temp[33];
-          
+
           cube_string[53] = cube_temp[18];
           cube_string[50] = cube_temp[21];
           cube_string[47] = cube_temp[24];
-          
+
           cube_string[27] = cube_temp[0];
           cube_string[30] = cube_temp[3];
           cube_string[33] = cube_temp[6];
-          
+
           cube_string[36] = cube_temp[44];
           cube_string[37] = cube_temp[43];
           cube_string[38] = cube_temp[42];
@@ -615,11 +613,35 @@ void sequence(String OPCODE, bool led_show){
     }
 
   }
-
   delete splitter;
   splitter = NULL;
 }
 
+void show_led_strip(Adafruit_NeoPixel& strip, const String& leds) {
+    constexpr int LEDS_PER_FACE = 6;
+    const int num_faces = min(leds.length(), LED_COUNT / LEDS_PER_FACE);
+
+    for (int face = 0; face < num_faces; face++) {
+        int r, g, b;
+        switch (leds[face]) {
+            case 'U': r = 0;   g = 0;   b = 255; break;
+            case 'F': r = 255; g = 255; b = 255; break;
+            case 'B': r = 255; g = 255; b = 0;   break;
+            case 'L': r = 255; g = 100; b = 0;   break;
+            case 'R': r = 255; g = 0;   b = 0;   break;
+            case 'D': r = 0;   g = 255; b = 0;   break;
+            default:  r = 0;   g = 0;   b = 0;   break; // Handle unexpected characters
+        }
+
+        for (int j = 0; j < LEDS_PER_FACE; j++) {
+            int i = face * LEDS_PER_FACE + j;
+            if (i < LED_COUNT) {
+                strip.setPixelColor(i, r, g, b);
+            }
+        }
+    }
+    strip.show();
+}
 void mirror_f(String OPCODE){
     leds_f[0] = OPCODE[0];
     leds_f[1] = OPCODE[1];
@@ -630,7 +652,6 @@ void mirror_f(String OPCODE){
     leds_f[6] = OPCODE[7];
     leds_f[7] = OPCODE[8];
 }
-
 void mirror_u(String OPCODE){
     leds_u[0] = OPCODE[2];
     leds_u[1] = OPCODE[5];
@@ -640,56 +661,8 @@ void mirror_u(String OPCODE){
     leds_u[5] = OPCODE[3];
     leds_u[6] = OPCODE[0];
     leds_u[7] = OPCODE[1];
-
-    int j = 0;
-    int k = 0;
-    int r = 0;
-    int g = 0;
-    int b = 0;
-    for(int i=0; i<LED_COUNT; i++) {
-        if (String(leds_u[k]) == "U"){
-          r = 0;
-          g = 0;
-          b = 255;
-        }
-        else if(String(leds_u[k]) == "F"){
-          r = 255;
-          g = 255;
-          b = 255;
-        }
-        else if(String(leds_u[k]) == "B"){
-          r = 255;
-          g = 255;
-          b = 0;
-        }
-        else if(String(leds_u[k]) == "L"){
-          r = 255;
-          g = 100;
-          b = 0;
-        }
-        else if(String(leds_u[k]) == "R"){
-          r = 255;
-          g = 0;
-          b = 0;
-        }
-        else if(String(leds_u[k]) == "D"){
-          r = 0;
-          g = 255;
-          b = 0;
-        }
-        if (j<= 4){
-            strip_bleu.setPixelColor(i, r, g, b);
-            j+=1;
-        }
-        else{
-            strip_bleu.setPixelColor(i, r, g, b);
-            j=0;
-            k+=1;
-        }
-    }
-    strip_bleu.show();
+    show_led_strip(strip_bleu, leds_u);
 }
-
 void mirror_d(String OPCODE){
     leds_d[0] = OPCODE[6];
     leds_d[1] = OPCODE[3];
@@ -699,56 +672,8 @@ void mirror_d(String OPCODE){
     leds_d[5] = OPCODE[5];
     leds_d[6] = OPCODE[8];
     leds_d[7] = OPCODE[7];
-
-    int j = 0;
-    int k = 0;
-    int r = 0;
-    int g = 0;
-    int b = 0;
-    for(int i=0; i<LED_COUNT; i++) {
-        if (String(leds_d[k]) == "U"){
-          r = 0;
-          g = 0;
-          b = 255;
-        }
-        else if(String(leds_d[k]) == "F"){
-          r = 255;
-          g = 255;
-          b = 255;
-        }
-        else if(String(leds_d[k]) == "B"){
-          r = 255;
-          g = 255;
-          b = 0;
-        }
-        else if(String(leds_d[k]) == "L"){
-          r = 255;
-          g = 100;
-          b = 0;
-        }
-        else if(String(leds_d[k]) == "R"){
-          r = 255;
-          g = 0;
-          b = 0;
-        }
-        else if(String(leds_d[k]) == "D"){
-          r = 0;
-          g = 255;
-          b = 0;
-        }
-        if (j<= 4){
-            strip_vert.setPixelColor(i, r, g, b);
-            j+=1;
-        }
-        else{
-            strip_vert.setPixelColor(i, r, g, b);
-            j=0;
-            k+=1;
-        }
-    }
-    strip_vert.show();
+    show_led_strip(strip_vert, leds_d);
 }
-
 void mirror_r(String OPCODE){
     leds_r[0] = OPCODE[2];
     leds_r[1] = OPCODE[1];
@@ -758,56 +683,8 @@ void mirror_r(String OPCODE){
     leds_r[5] = OPCODE[7];
     leds_r[6] = OPCODE[8];
     leds_r[7] = OPCODE[5];
-
-    int j = 0;
-    int k = 0;
-    int r = 0;
-    int g = 0;
-    int b = 0;
-    for(int i=0; i<LED_COUNT; i++) {
-        if (String(leds_r[k]) == "U"){
-          r = 0;
-          g = 0;
-          b = 255;
-        }
-        else if(String(leds_r[k]) == "F"){
-          r = 255;
-          g = 255;
-          b = 255;
-        }
-        else if(String(leds_r[k]) == "B"){
-          r = 255;
-          g = 255;
-          b = 0;
-        }
-        else if(String(leds_r[k]) == "L"){
-          r = 255;
-          g = 100;
-          b = 0;
-        }
-        else if(String(leds_r[k]) == "R"){
-          r = 255;
-          g = 0;
-          b = 0;
-        }
-        else if(String(leds_r[k]) == "D"){
-          r = 0;
-          g = 255;
-          b = 0;
-        }
-        if (j<= 4){
-            strip_rouge.setPixelColor(i, r, g, b);
-            j+=1;
-        }
-        else{
-            strip_rouge.setPixelColor(i, r, g, b);
-            j=0;
-            k+=1;
-        }
-    }
-    strip_rouge.show();
+    show_led_strip(strip_rouge, leds_r);
 }
-
 void mirror_l(String OPCODE){
     leds_l[0] = OPCODE[8];
     leds_l[1] = OPCODE[5];
@@ -817,56 +694,8 @@ void mirror_l(String OPCODE){
     leds_l[5] = OPCODE[3];
     leds_l[6] = OPCODE[6];
     leds_l[7] = OPCODE[7];
-
-    int j = 0;
-    int k = 0;
-    int r = 0;
-    int g = 0;
-    int b = 0;
-    for(int i=0; i<LED_COUNT; i++) {
-        if (String(leds_l[k]) == "U"){
-          r = 0;
-          g = 0;
-          b = 255;
-        }
-        else if(String(leds_l[k]) == "F"){
-          r = 255;
-          g = 255;
-          b = 255;
-        }
-        else if(String(leds_l[k]) == "B"){
-          r = 255;
-          g = 255;
-          b = 0;
-        }
-        else if(String(leds_l[k]) == "L"){
-          r = 255;
-          g = 100;
-          b = 0;
-        }
-        else if(String(leds_l[k]) == "R"){
-          r = 255;
-          g = 0;
-          b = 0;
-        }
-        else if(String(leds_l[k]) == "D"){
-          r = 0;
-          g = 255;
-          b = 0;
-        }
-        if (j<= 4){
-            strip_orange.setPixelColor(i, r, g, b);
-            j+=1;
-        }
-        else{
-            strip_orange.setPixelColor(i, r, g, b);
-            j=0;
-            k+=1;
-        }
-    }
-    strip_orange.show();
+    show_led_strip(strip_orange, leds_l);
 }
-
 void mirror_b(String OPCODE){
     leds_b[0] = OPCODE[8];
     leds_b[1] = OPCODE[7];
@@ -876,55 +705,9 @@ void mirror_b(String OPCODE){
     leds_b[5] = OPCODE[1];
     leds_b[6] = OPCODE[2];
     leds_b[7] = OPCODE[5];
-
-    int j = 0;
-    int k = 0;
-    int r = 0;
-    int g = 0;
-    int b = 0;
-    for(int i=0; i<LED_COUNT; i++) {
-        if (String(leds_b[k]) == "U"){
-          r = 0;
-          g = 0;
-          b = 255;
-        }
-        else if(String(leds_b[k]) == "F"){
-          r = 255;
-          g = 255;
-          b = 255;
-        }
-        else if(String(leds_b[k]) == "B"){
-          r = 255;
-          g = 255;
-          b = 0;
-        }
-        else if(String(leds_b[k]) == "L"){
-          r = 255;
-          g = 100;
-          b = 0;
-        }
-        else if(String(leds_b[k]) == "R"){
-          r = 255;
-          g = 0;
-          b = 0;
-        }
-        else if(String(leds_b[k]) == "D"){
-          r = 0;
-          g = 255;
-          b = 0;
-        }
-        if (j<= 4){
-            strip_jaune.setPixelColor(i, r, g, b);
-            j+=1;
-        }
-        else{
-            strip_jaune.setPixelColor(i, r, g, b);
-            j=0;
-            k+=1;
-        }
-    }
-    strip_jaune.show();
+    show_led_strip(strip_jaune, leds_b);
 }
+
 
 void lights(String OPCODE) {
     if (OPCODE == "RECO")
@@ -956,7 +739,7 @@ void lights(String OPCODE) {
             strip_rouge.setPixelColor(i, 255, 0, 0);
             strip_orange.setPixelColor(i, 255, 0, 0);
         }
-    } 
+    }
     strip_vert.show();
     strip_bleu.show();
     strip_rouge.show();
@@ -965,142 +748,59 @@ void lights(String OPCODE) {
 }
 
 
+void moveMotor(AccelStepper& motor, int steps) {
+    motor.enableOutputs();
+    motor.runToNewPosition(motor.currentPosition() + steps);
+    motor.disableOutputs();
+}
+
 void moveAxis(String OPCODE) {
-    if (OPCODE == "U")
-    {
-        bleu.enableOutputs();
-        bleu.runToNewPosition(bleu.currentPosition() + STEPS/4);
-        bleu.disableOutputs();
-    }
-    else if(OPCODE == "U'")
-    {
-        bleu.enableOutputs();
-        bleu.runToNewPosition(bleu.currentPosition() - STEPS/4);
-        bleu.disableOutputs();
-    }
-    else if(OPCODE == "U2")
-    {
-        bleu.enableOutputs();
-        bleu.runToNewPosition(bleu.currentPosition() + STEPS/2);
-        bleu.disableOutputs();
-    }
-    
-    else if (OPCODE == "D")
-    {
-        vert.enableOutputs();
-        vert.runToNewPosition(vert.currentPosition() + STEPS/4);
-        vert.disableOutputs();
-    }
-    else if(OPCODE == "D'")
-    {
-        vert.enableOutputs();
-        vert.runToNewPosition(vert.currentPosition() - STEPS/4);
-        vert.disableOutputs();
-    }
-    else if(OPCODE == "D2")
-    {
-        vert.enableOutputs();
-        vert.runToNewPosition(vert.currentPosition() + STEPS/2);
-        vert.disableOutputs();
-    }
+    struct AxisMove {
+        String face;
+        AccelStepper& motor;
+    };
 
-    else if (OPCODE == "F")
-    {
-        blanc.enableOutputs();
-        blanc.runToNewPosition(blanc.currentPosition() + STEPS/4);
-        blanc.disableOutputs();
-    }
-    else if(OPCODE == "F'")
-    {
-        blanc.enableOutputs();
-        blanc.runToNewPosition(blanc.currentPosition() - STEPS/4);
-        blanc.disableOutputs();
-    }
-    else if(OPCODE == "F2")
-    {
-        blanc.enableOutputs();
-        blanc.runToNewPosition(blanc.currentPosition() + STEPS/2);
-        blanc.disableOutputs();
-    }
+    const AxisMove moves[] = {
+        {"U", bleu},
+        {"D", vert},
+        {"F", blanc},
+        {"B", jaune},
+        {"R", rouge},
+        {"L", orange}
+    };
 
-    else if (OPCODE == "B")
-    {
-        jaune.enableOutputs();
-        jaune.runToNewPosition(jaune.currentPosition() + STEPS/4);
-        jaune.disableOutputs();
-    }
-    else if(OPCODE == "B'")
-    {
-        jaune.enableOutputs();
-        jaune.runToNewPosition(jaune.currentPosition() - STEPS/4);
-        jaune.disableOutputs();
-    }
-    else if(OPCODE == "B2")
-    {
-        jaune.enableOutputs();
-        jaune.runToNewPosition(jaune.currentPosition() + STEPS/2);
-        jaune.disableOutputs();
-    }
-
-    else if (OPCODE == "R")
-    {
-        rouge.enableOutputs();
-        rouge.runToNewPosition(rouge.currentPosition() + STEPS/4);
-        rouge.disableOutputs();
-    }
-    else if(OPCODE == "R'")
-    {
-        rouge.enableOutputs();
-        rouge.runToNewPosition(rouge.currentPosition() - STEPS/4);
-        rouge.disableOutputs();
-    }
-    else if(OPCODE == "R2")
-    {
-        rouge.enableOutputs();
-        rouge.runToNewPosition(rouge.currentPosition() + STEPS/2);
-        rouge.disableOutputs();
-    }
-    
-    else if (OPCODE == "L")
-    {
-        orange.enableOutputs();
-        orange.runToNewPosition(orange.currentPosition() + STEPS/4);
-        orange.disableOutputs();
-    }
-    else if(OPCODE == "L'")
-    {
-        orange.enableOutputs();
-        orange.runToNewPosition(orange.currentPosition() - STEPS/4);
-        orange.disableOutputs();
-    }
-    else if(OPCODE == "L2")
-    {
-        orange.enableOutputs();
-        orange.runToNewPosition(orange.currentPosition() + STEPS/2);
-        orange.disableOutputs();
+    for (const auto& move : moves) {
+        if (OPCODE == move.face) {
+            moveMotor(move.motor, STEPS / 4);
+            return;
+        }
+        if (OPCODE == move.face + "'") {
+            moveMotor(move.motor, -STEPS / 4);
+            return;
+        }
+        if (OPCODE == move.face + "2") {
+            moveMotor(move.motor, STEPS / 2);
+            return;
+        }
     }
 }
 
 void serial_switch(String OP_CODE){
   OP_CODE.toUpperCase();
   if (OP_CODE.length() <= 3){
-      moveAxis(OP_CODE);  
+      moveAxis(OP_CODE);
   }
   else if (OP_CODE.substring(0, 4) == "LEDS"){
-      lights(OP_CODE.substring(5)); 
+      lights(OP_CODE.substring(5));
   }
   else if (OP_CODE.substring(0, 4) == "LEDP"){
-      leds_power(OP_CODE.substring(5));  
+      leds_power(OP_CODE.substring(5));
   }
   else if (OP_CODE.substring(0, 4) == "SOLV"){
       sequence(OP_CODE.substring(5), true);
   }
   else if (OP_CODE.substring(0, 4) == "MOVE"){
       sequence(OP_CODE.substring(5), false);
-  }
-  else if (OP_CODE.substring(0, 4) == "CALI"){
-      sequence("U2-U2-R2-R2-F2-F2-B2-B2-L2-L2-D2-D2", false);
-      sequence("U'-U'-U'-U'-R'-R'-R'-R'-F'-F'-F'-F'-B'-B'-B'-B'-L'-L'-L'-L'-D'-D'-D'-D'", false);
   }
   else if (OP_CODE.substring(0, 4) == "MIRR"){
       cube_string = OP_CODE.substring(5);
