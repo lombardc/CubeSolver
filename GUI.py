@@ -6,10 +6,121 @@ import qdarktheme
 import sys
 from argparse import ArgumentParser, Namespace
 from PyQt5.QtGui import QIcon, QFont
-from PyQt5.QtCore import Qt, QSize
+from PyQt5.QtCore import Qt, QSize, pyqtSignal
 from QLed import QLed
 
-from constants import MOVES, GUI_COLORS, CUBE_STRING, FACELET_POSITION
+from constants import MOVES, GUI_COLORS, CUBE_STRING, FACELET_POSITION, MOTOR_DEFAULT_SPEED, \
+    MOTOR_DEFAULT_ACCELERATION, MOTOR_SPEED_STEPS, MOTOR_ACCELERATION_STEPS
+
+
+class ValueChanger(QWidget):
+    new_value = pyqtSignal(float)
+
+    def __init__(self, min_val, max_val, current_value, steps, text):
+        super(ValueChanger, self).__init__()
+        self.layout = QGridLayout()
+        self.setLayout(self.layout)
+
+        self.increase_button = QPushButton("+")
+        self.decrease_button = QPushButton("-")
+
+        self.increase_possible = True
+        self.decrease_possible = True
+
+        self.progress_bar = QProgressBar(self)
+        self.minimum_val = min_val
+        self.maximum_val = max_val
+        self.current_value = current_value
+        self.steps = steps
+
+        self.increase_button.clicked.connect(self._increase_val)
+        self.decrease_button.clicked.connect(self._decrease_val)
+
+        self.progress_bar.setStyleSheet("QProgressBar::chunk {margin: 5px;}")
+        self.progress_bar.setFixedHeight(35)
+        self.progress_bar.setFixedWidth(600)
+        self.progress_bar.setContentsMargins(0, 10, 0, 10)
+        self.progress_bar.setFormat("%v" + " " + text)
+        self.layout.addWidget(self.progress_bar, 0, 3, 1, 5)
+
+        self.layout.addWidget(self.decrease_button, 0, 1)
+        self.layout.addWidget(self.increase_button, 0, 10)
+
+    def _increase_val(self):
+        if self.current_value + self.steps <= self.maximum_val:
+            self.current_value = self.current_value + self.steps
+        self._possible_actions()
+        self.new_value.emit(self.current_value)
+
+    def _decrease_val(self):
+        if self.current_value - self.steps >= self.minimum_val:
+            self.current_value = self.current_value - self.steps
+        self._possible_actions()
+        self.new_value.emit(self.current_value)
+
+    def lock(self, val):
+        if val:
+            self.increase_button.setEnabled(False)
+            self.decrease_button.setEnabled(False)
+        else:
+            self.increase_button.setEnabled(self.increase_possible)
+            self.decrease_button.setEnabled(self.decrease_possible)
+
+    def _possible_actions(self):
+        if self.current_value >= self.minimum_val + self.steps:
+            self.decrease_possible = True
+        else:
+            self.decrease_possible = False
+        if self.current_value <= self.maximum_val - self.steps:
+            self.increase_possible = True
+        else:
+            self.increase_possible = False
+        self.increase_button.setEnabled(self.increase_possible)
+        self.decrease_button.setEnabled(self.decrease_possible)
+
+    @property
+    def steps(self):
+        return self._steps
+
+    @steps.setter
+    def steps(self, val):
+        self._steps = val
+        if self._current_value + self._steps >= self._maximum_val:
+            self.increase_possible = False
+        else:
+            self.increase_possible = True
+        if self._current_value - self._steps <= self._minimum_val:
+            self.decrease_possible = False
+        else:
+            self.decrease_possible = True
+        self._possible_actions()
+
+    @property
+    def minimum_val(self):
+        return self._minimum_val
+
+    @minimum_val.setter
+    def minimum_val(self, val):
+        self._minimum_val = val
+        self.progress_bar.setMinimum(self._minimum_val)
+
+    @property
+    def maximum_val(self):
+        return self._maximum_val
+
+    @maximum_val.setter
+    def maximum_val(self, val):
+        self._maximum_val = val
+        self.progress_bar.setMaximum(self._maximum_val)
+
+    @property
+    def current_value(self):
+        return self._current_value
+
+    @current_value.setter
+    def current_value(self, val):
+        self._current_value = val
+        self.progress_bar.setValue(self._current_value)
 
 
 class SolvingTimer(QWidget):
@@ -172,8 +283,13 @@ class MainWindow(QMainWindow):
         self.solver_tab.layout = QGridLayout()
         self.solver_tab.setLayout(self.solver_tab.layout)
 
+        self.conf_tab = QWidget(self.tabs)
+        self.conf_tab.layout = QGridLayout()
+        self.conf_tab.setLayout(self.conf_tab.layout)
+
         self.tabs.addTab(self.moves_tab, "Moves")
         self.tabs.addTab(self.solver_tab, "Auto Solver")
+        self.tabs.addTab(self.conf_tab, "Configuration")
 
         # Quit button
         self.quit_button = QPushButton("Quit")
@@ -215,7 +331,6 @@ class MainWindow(QMainWindow):
         self.scramble_progress.setContentsMargins(0, 10, 0, 10)
         self.moves_tab.layout.addWidget(self.scramble_progress, 3, 2, 1, 4, alignment=Qt.AlignHCenter)
         self.scramble_progress.setHidden(True)
-
 
         ##################
         # Auto Solve Tab #
@@ -280,6 +395,24 @@ class MainWindow(QMainWindow):
 
         # Hide timers so far
         self.hide_timers()
+
+        #####################
+        # Configuration Tab #
+        #####################
+
+        self.speed_label = QLabel("Motor Speed")
+        self.speed_label.setFont(QFont('Arial', 20))
+        self.current_speed = ValueChanger(2500, 5500, MOTOR_DEFAULT_SPEED, MOTOR_SPEED_STEPS, "Steps/s")
+
+        self.acceleration_label = QLabel("Motor Acceleration")
+        self.acceleration_label.setFont(QFont('Arial', 20))
+        self.current_acceleration = ValueChanger(100_000, 300_000, MOTOR_DEFAULT_ACCELERATION, MOTOR_ACCELERATION_STEPS,
+                                                 "Steps/s^2")
+
+        self.conf_tab.layout.addWidget(self.speed_label, 2, 0, 1, 12, alignment=Qt.AlignHCenter)
+        self.conf_tab.layout.addWidget(self.current_speed, 3, 0, 1, 12, alignment=Qt.AlignHCenter)
+        self.conf_tab.layout.addWidget(self.acceleration_label, 4, 0, 1, 12, alignment=Qt.AlignHCenter)
+        self.conf_tab.layout.addWidget(self.current_acceleration, 5, 0, 1, 12, alignment=Qt.AlignHCenter)
 
     def _init_facelets(self):
         for index, val in enumerate(CUBE_STRING):

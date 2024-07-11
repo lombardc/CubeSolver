@@ -27,7 +27,7 @@ Adafruit_NeoPixel strip_rouge(LED_COUNT, LED_PIN_rouge, NEO_GRB + NEO_KHZ800);
 Adafruit_NeoPixel strip_bleu(LED_COUNT, LED_PIN_bleu, NEO_GRB + NEO_KHZ800);
 Adafruit_NeoPixel strip_orange(LED_COUNT, LED_PIN_orange, NEO_GRB + NEO_KHZ800);
 
-float MOTOR_SPEED = 5000.0; //4000 // good lub, 5500
+float MOTOR_SPEED = 4000.0; //4000 // good lub, 5500
 float MOTOR_ACC = 200000;//200000.0;
 String OP_CODE;
 
@@ -997,6 +997,26 @@ void moveAxis(String OPCODE) {
     }
 }
 
+void set_speed(String OP_CODE){
+    MOTOR_SPEED = OP_CODE.toInt();
+    jaune.setMaxSpeed(MOTOR_SPEED);
+    blanc.setMaxSpeed(MOTOR_SPEED);
+    rouge.setMaxSpeed(MOTOR_SPEED);
+    orange.setMaxSpeed(MOTOR_SPEED);
+    vert.setMaxSpeed(MOTOR_SPEED);
+    bleu.setMaxSpeed(MOTOR_SPEED);
+}
+
+void set_acceleration(String OP_CODE){
+    MOTOR_ACC = OP_CODE.toInt();
+    jaune.setAcceleration(MOTOR_ACC);
+    blanc.setAcceleration(MOTOR_ACC);
+    rouge.setAcceleration(MOTOR_ACC);
+    orange.setAcceleration(MOTOR_ACC);
+    vert.setAcceleration(MOTOR_ACC);
+    bleu.setAcceleration(MOTOR_ACC);
+}
+
 void serial_switch(String OP_CODE){
   OP_CODE.toUpperCase();
   if (OP_CODE.length() <= 3){
@@ -1013,6 +1033,12 @@ void serial_switch(String OP_CODE){
   }
   else if (OP_CODE.substring(0, 4) == "MOVE"){
       sequence(OP_CODE.substring(5), false);
+  }
+  else if (OP_CODE.substring(0, 4) == "SPEE"){
+      set_speed(OP_CODE.substring(5));
+  }
+  else if (OP_CODE.substring(0, 4) == "ACCE"){
+      set_acceleration(OP_CODE.substring(5));
   }
   else if (OP_CODE.substring(0, 4) == "MIRR"){
       cube_string = OP_CODE.substring(5);

@@ -14,6 +14,7 @@ from PyQt5.QtCore import QThreadPool, pyqtSignal, QTimer, Qt
 from PyQt5.QtGui import QPixmap, QCursor
 from PyQt5.QtWidgets import QApplication, QSplashScreen, QProgressBar
 from QLed import QLed
+import logging
 
 from CubeThread import Worker
 from GUI import MainWindow, MoveButton
@@ -68,7 +69,16 @@ class ScrambleGenerator:
 
 class ArduinoCom:
     def __init__(self, serial_port: str):
+        logging.basicConfig(filename="Arduino_Com.log",
+                            format='%(asctime)s %(message)s',
+                            filemode='w')
+        self.logger = logging.getLogger()
+
+        # Setting the threshold of logger to DEBUG
+        self.logger.setLevel(logging.INFO)
+        self.logger.info("Starting New Session")
         self.serial = serial.Serial(serial_port, 115200, timeout=1)
+        self.logger.info(f"Opening serial port {serial_port} at {115200} bauds")
         self.scramble_generator = ScrambleGenerator(min_length=20, max_length=30)
 
         self.solve_over = True
@@ -78,6 +88,7 @@ class ArduinoCom:
     def _write(self, OPCODE, sleep=0.01, *args, **kwargs):
         text = OPCODE + "\n"
         self.serial.write(text.encode())
+        self.logger.info(text.encode())
         while self.serial.readline() != b'OK\r\n':
             time.sleep(sleep)
         return
@@ -100,6 +111,14 @@ class ArduinoCom:
 
     def cube_mirror(self, cube_string: str, *args, **kwargs):
         self._write(f"MIRR {cube_string}")
+        return
+
+    def speed_change(self, speed_val: int, *args, **kwargs):
+        self._write(f"SPEE {speed_val}")
+        return
+
+    def acceleration_change(self, acceleration_val: int, *args, **kwargs):
+        self._write(f"ACCE {acceleration_val}")
         return
 
     def solve(self, OPCODE, *args, **kwargs):
@@ -207,6 +226,8 @@ class CubeSolver(MainWindow):
         self.scramble.clicked.connect(self._init_auto_scrambling)
         self.color_reco_button.clicked.connect(self._init_color_recognition)
         self.solve_button.clicked.connect(self._init_solve_cube)
+        self.current_speed.new_value.connect(self._change_motor_speed)
+        self.current_acceleration.new_value.connect(self._change_motor_acceleration)
         self.quit_button.clicked.connect(self._pre_quit)
 
         # Scramble Generator
@@ -222,9 +243,22 @@ class CubeSolver(MainWindow):
         # Init LEDS
         self.init_led()
 
+    def _change_motor_speed(self, new_val):
+        self._lock_all(True)
+        worker = Worker(self.Arduino.speed_change, int(new_val))
+        worker.signals.finished.connect(partial(self._lock_all, False))
+        self.threadpool.start(worker)
+
+    def _change_motor_acceleration(self, new_val):
+        self._lock_all(True)
+        worker = Worker(self.Arduino.acceleration_change, int(new_val))
+        worker.signals.finished.connect(partial(self._lock_all, False))
+        self.threadpool.start(worker)
+
     def _pre_quit(self):
         worker = Worker(self.Arduino.led_power, 0)
         worker.signals.finished.connect(self.close)
+        self.Arduino.logger.info(f"Ending Session")
         self.threadpool.start(worker)
 
     def _init_solve_cube(self):
@@ -312,7 +346,7 @@ class CubeSolver(MainWindow):
         self._reinit_cube_solution()
         nb_move = 0
         self.Arduino.led_power(50)
-        self.Arduino.led_pattern("CALI")
+        self.Arduino.led_pattern("FLAS")
         for move in scramble:
             self.Arduino.single_move(move)
             nb_move += 1
@@ -329,6 +363,8 @@ class CubeSolver(MainWindow):
     def _lock_all(self, status: bool):
         [x.setDisabled(status) for x in self.simple_move_group.buttons()]
         self.scramble.setDisabled(status)
+        self.current_speed.lock(status)
+        self.current_acceleration.lock(status)
         self.color_reco_button.setDisabled(status)
 
     def init_led(self):
