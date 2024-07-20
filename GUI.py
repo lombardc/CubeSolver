@@ -402,11 +402,11 @@ class MainWindow(QMainWindow):
 
         self.speed_label = QLabel("Motor Speed")
         self.speed_label.setFont(QFont('Arial', 20))
-        self.current_speed = ValueChanger(2500, 5500, MOTOR_DEFAULT_SPEED, MOTOR_SPEED_STEPS, "Steps/s")
+        self.current_speed = ValueChanger(2500, 15000, MOTOR_DEFAULT_SPEED, MOTOR_SPEED_STEPS, "Steps/s")
 
         self.acceleration_label = QLabel("Motor Acceleration")
         self.acceleration_label.setFont(QFont('Arial', 20))
-        self.current_acceleration = ValueChanger(100_000, 300_000, MOTOR_DEFAULT_ACCELERATION, MOTOR_ACCELERATION_STEPS,
+        self.current_acceleration = ValueChanger(100_000, 500_000, MOTOR_DEFAULT_ACCELERATION, MOTOR_ACCELERATION_STEPS,
                                                  "Steps/s^2")
 
         self.conf_tab.layout.addWidget(self.speed_label, 2, 0, 1, 12, alignment=Qt.AlignHCenter)

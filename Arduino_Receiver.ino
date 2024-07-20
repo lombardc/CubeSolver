@@ -12,7 +12,7 @@
 #define LED_PIN_jaune 40
 
 #define LED_COUNT 48
-#define STEPS 800
+#define STEPS 400
 
 AccelStepper blanc(AccelStepper::DRIVER, 2, 52);
 AccelStepper orange(AccelStepper::DRIVER, 3, 50);
@@ -27,8 +27,8 @@ Adafruit_NeoPixel strip_rouge(LED_COUNT, LED_PIN_rouge, NEO_GRB + NEO_KHZ800);
 Adafruit_NeoPixel strip_bleu(LED_COUNT, LED_PIN_bleu, NEO_GRB + NEO_KHZ800);
 Adafruit_NeoPixel strip_orange(LED_COUNT, LED_PIN_orange, NEO_GRB + NEO_KHZ800);
 
-float MOTOR_SPEED = 4000.0; //4000 // good lub, 5500
-float MOTOR_ACC = 200000;//200000.0;
+float MOTOR_SPEED = 6000.0; //4000 // good lub, 5500
+float MOTOR_ACC = 300000;//200000.0;
 String OP_CODE;
 
 

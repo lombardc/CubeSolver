@@ -88,7 +88,7 @@ class ArduinoCom:
     def _write(self, OPCODE, sleep=0.01, *args, **kwargs):
         text = OPCODE + "\n"
         self.serial.write(text.encode())
-        self.logger.info(text.encode())
+        self.logger.info(OPCODE)
         while self.serial.readline() != b'OK\r\n':
             time.sleep(sleep)
         return
@@ -124,7 +124,7 @@ class ArduinoCom:
     def solve(self, OPCODE, *args, **kwargs):
         self.solve_over = False
         self.start_solve = time.time()
-        self._write(f"SOLV {OPCODE}", sleep=0.001)
+        self._write(f"MOVE {OPCODE}", sleep=0.001)
         self.solve_time = time.time() - self.start_solve
         self.solve_over = True
         return True
@@ -143,6 +143,7 @@ class CubeVisualizer:
         self._cam.set(cv2.CAP_PROP_WB_TEMPERATURE, 10000)
         self._cam.set(cv2.CAP_PROP_AUTO_EXPOSURE, 0.75)
         self._cam.set(cv2.CAP_PROP_EXPOSURE, 60)
+        #self._cam.set(cv2.CAP_PROP_EXPOSURE, 70)
 
         # Moves list and position list
         self._reco_moves = RECOGNITION_MOVES
@@ -184,6 +185,7 @@ class CubeVisualizer:
         return output, frame
 
     def get_all_colors(self, progress_callback: pyqtSignal):
+        self._serial.logger.info("########START COLOR RECOGNITION########")
         over = False
         step = 0
         f_count = 0
@@ -198,6 +200,7 @@ class CubeVisualizer:
             else:
                 f_count = 0
                 cols, img = self.color_finder(frame)
+                #cv2.imwrite(f"cams/Cam{step}.png", img)
                 update = []
                 for val in self._reco_positions[step]:
                     update.append([val[1], cols[val[0]]])
@@ -208,6 +211,7 @@ class CubeVisualizer:
                     # Give time for the last emit...
                     time.sleep(0.1)
                     over = True
+        self._serial.logger.info("########END COLOR RECOGNITION########")
         return
 
 
@@ -229,6 +233,11 @@ class CubeSolver(MainWindow):
         self.current_speed.new_value.connect(self._change_motor_speed)
         self.current_acceleration.new_value.connect(self._change_motor_acceleration)
         self.quit_button.clicked.connect(self._pre_quit)
+
+        # Setting Defaults Speeds
+        time.sleep(2)
+        self.Arduino.speed_change(self.current_speed.current_value)
+        self.Arduino.acceleration_change(self.current_acceleration.current_value)
 
         # Scramble Generator
         self.scramble_generator = ScrambleGenerator(min_length=20, max_length=30)
@@ -290,6 +299,8 @@ class CubeSolver(MainWindow):
         self.show_reco_timer()
 
         self._reinit_cube_solution()
+        self.Arduino.speed_change(2500)
+        self.Arduino.acceleration_change(200_000)
 
         recognizer = Worker(self._auto_recognition)
         recognizer.signals.progress.connect(self._update_recognition_progress)
@@ -327,9 +338,14 @@ class CubeSolver(MainWindow):
             self.recognition_led.setOnColour(QLed.Red)
             self.recognition_led.value = True
         finally:
+            self.Arduino.speed_change(self.current_speed.current_value)
+            self.Arduino.acceleration_change(self.current_acceleration.current_value)
+
             self.hide_timers()
 
     def _init_auto_scrambling(self):
+        self.Arduino.speed_change(2500)
+        self.Arduino.acceleration_change(200_000)
         scramble, s_len = self.scramble_generator.get_scramble()
         self.hide_timers()
         self.scramble_progress.setMinimum(0)
@@ -346,18 +362,22 @@ class CubeSolver(MainWindow):
         self._reinit_cube_solution()
         nb_move = 0
         self.Arduino.led_power(50)
+        self.Arduino.logger.info("########START AUTO SCRAMBLING########")
         self.Arduino.led_pattern("FLAS")
         for move in scramble:
             self.Arduino.single_move(move)
             nb_move += 1
             progress_callback.emit(nb_move)
         self.Arduino.led_pattern("RECO")
+        self.Arduino.logger.info("########END AUTO SCRAMBLING########")
 
     def _update_scrambling_progress(self, status: int):
         self.scramble_progress.setValue(status)
 
     def _scrambling_over(self):
         self._lock_all(False)
+        self.Arduino.speed_change(self.current_speed.current_value)
+        self.Arduino.acceleration_change(self.current_acceleration.current_value)
         self.scramble_progress.setHidden(True)
 
     def _lock_all(self, status: bool):
