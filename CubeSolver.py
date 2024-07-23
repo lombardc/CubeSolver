@@ -2,6 +2,7 @@ import random
 import sys
 import time
 from argparse import ArgumentParser, Namespace
+from datetime import datetime
 from functools import partial
 
 import cv2
@@ -20,7 +21,7 @@ from CubeThread import Worker
 from GUI import MainWindow, MoveButton
 from constants import RECOGNITION_MOVES, RECOGNITION_STEPS, \
     ROI_POSITIONS, LOWER_RED, UPPER_RED, LOWER_BLUE, UPPER_BLUE, LOWER_GREEN, UPPER_GREEN, LOWER_WHITE, \
-    UPPER_WHITE, LOWER_ORANGE, UPPER_ORANGE, LOWER_YELLOW, UPPER_YELLOW, ROI_SIZE
+    UPPER_WHITE, LOWER_ORANGE, UPPER_ORANGE, LOWER_YELLOW, UPPER_YELLOW, ROI_SIZE, OPPOSITION_DIR
 
 
 class ScrambleGenerator:
@@ -124,7 +125,7 @@ class ArduinoCom:
     def solve(self, OPCODE, *args, **kwargs):
         self.solve_over = False
         self.start_solve = time.time()
-        self._write(f"MOVE {OPCODE}", sleep=0.001)
+        self._write(f"SOLV {OPCODE}", sleep=0.001)
         self.solve_time = time.time() - self.start_solve
         self.solve_over = True
         return True
@@ -142,8 +143,7 @@ class CubeVisualizer:
         self._cam.set(cv2.CAP_PROP_AUTO_WB, 0.0)
         self._cam.set(cv2.CAP_PROP_WB_TEMPERATURE, 10000)
         self._cam.set(cv2.CAP_PROP_AUTO_EXPOSURE, 0.75)
-        self._cam.set(cv2.CAP_PROP_EXPOSURE, 60)
-        #self._cam.set(cv2.CAP_PROP_EXPOSURE, 70)
+        self._cam.set(cv2.CAP_PROP_EXPOSURE, 120)
 
         # Moves list and position list
         self._reco_moves = RECOGNITION_MOVES
@@ -161,11 +161,11 @@ class CubeVisualizer:
             rois[index][1] = cv2.cvtColor(rois[index][0], cv2.COLOR_BGR2HSV)
             rois[index][2] = cv2.cvtColor(rois[index][0], cv2.COLOR_BGR2HLS)
 
-            rois[index][3] = cv2.inRange(rois[index][1], np.array(LOWER_RED), np.array(UPPER_RED))
+            rois[index][3] = cv2.inRange(rois[index][0], np.array(LOWER_RED), np.array(UPPER_RED))
             rois[index][4] = cv2.inRange(rois[index][1], np.array(LOWER_GREEN), np.array(UPPER_GREEN))
             rois[index][5] = cv2.inRange(rois[index][1], np.array(LOWER_BLUE), np.array(UPPER_BLUE))
             rois[index][6] = cv2.inRange(rois[index][2], np.array(LOWER_WHITE), np.array(UPPER_WHITE))
-            rois[index][7] = cv2.inRange(rois[index][2], np.array(LOWER_ORANGE), np.array(UPPER_ORANGE))
+            rois[index][7] = cv2.inRange(rois[index][1], np.array(LOWER_ORANGE), np.array(UPPER_ORANGE))
             rois[index][8] = cv2.inRange(rois[index][2], np.array(LOWER_YELLOW), np.array(UPPER_YELLOW))
 
             colors[index] = [np.mean(rois[index][x + 3]) for x in range(6)]
@@ -200,7 +200,7 @@ class CubeVisualizer:
             else:
                 f_count = 0
                 cols, img = self.color_finder(frame)
-                #cv2.imwrite(f"cams/Cam{step}.png", img)
+                cv2.imwrite(f"cams/Cam{step}.png", img)
                 update = []
                 for val in self._reco_positions[step]:
                     update.append([val[1], cols[val[0]]])
@@ -291,6 +291,13 @@ class CubeSolver(MainWindow):
 
     def solve_over(self):
         self.solver_timer.current_time_ms = round(self.Arduino.solve_time, 3) * 1000
+        # Logging the solve :)
+        with open("solve.log", "a") as logs:
+            logs.write(f"Solve: {datetime.now().strftime('%m/%d/%Y, %H:%M:%S')}".center(100, "#") + "\n")
+            logs.write("# Cube string:" + self.visualized_cube_string.center(85, " ") + "#" + "\n")
+            logs.write("# Solve moves:" + self.cube_solution.center(85, " ") + "#" + "\n")
+            logs.write("# Solve timer:" + str(round(self.Arduino.solve_time, 3)).center(85, " ") + "#" + "\n")
+            logs.write(f"".center(100, "#") + "\n")
         self._lock_all(False)
 
     def _init_color_recognition(self):
@@ -325,11 +332,27 @@ class CubeSolver(MainWindow):
         self.recognition_progress.setValue(self.recognition_progress.value() + len(vals))
 
     def _auto_recognition(self, progress_callback: pyqtSignal):
-        self._init_led()
+        self.Arduino.led_power(50)
+        self.Arduino.led_pattern("RECO")
         self.CubeVisualizer.get_all_colors(progress_callback)
         try:
             self.visualized_cube_string = ''.join([f.val for f in self.facelets])
-            self.cube_solution = kociemba.solve(self.visualized_cube_string).replace(" ", "-")
+            self.cube_solution = kociemba.solve(self.visualized_cube_string).split(" ")
+
+            final_sol = []
+
+            for count, move in enumerate(self.cube_solution):
+                if count == 0:
+                    final_sol.append(move)
+                else:
+                    if OPPOSITION_DIR[self.cube_solution[count - 1][0]] == move[0]:
+                        x = final_sol[-1][:]
+                        final_sol[-1] = x + ":" + move
+                    else:
+                        final_sol.append(move)
+
+            self.cube_solution = '-'.join(final_sol)
+
             self.recognition_led.setOnColour(QLed.Green)
             self.recognition_led.value = True
             self.Arduino.cube_mirror(self.visualized_cube_string)
@@ -337,10 +360,11 @@ class CubeSolver(MainWindow):
         except ValueError:  # Kociemba failed to solve -> Bad string
             self.recognition_led.setOnColour(QLed.Red)
             self.recognition_led.value = True
+            self.Arduino.led_pattern("RECO")
         finally:
             self.Arduino.speed_change(self.current_speed.current_value)
             self.Arduino.acceleration_change(self.current_acceleration.current_value)
-
+            self.Arduino.led_power(50)
             self.hide_timers()
 
     def _init_auto_scrambling(self):

@@ -8,6 +8,14 @@ MOVES = [["U", "U'", "U2"],
          ["B", "B'", "B2"],
          ]
 
+OPPOSITION_DIR = {"U": "D",
+                  "D": "U",
+                  "F": "B",
+                  "B": "F",
+                  "R": "L",
+                  "L": "R"
+                  }
+
 # Dictionary defining the GUI color for each facelet
 GUI_COLORS = {"x": "gray",
               "U": "cornflowerblue",
@@ -88,34 +96,34 @@ ROI_POSITIONS = [[690, 200],
                  ]
 
 # define range of red color in HSV Color Space
-LOWER_RED = [0, 130, 130]
-UPPER_RED = [10, 255, 196]
+LOWER_RED = [30, 70, 215]
+UPPER_RED = [170, 140, 255]
 
 # define range of green color in HSV Color Space
-LOWER_GREEN = [60, 200, 100]
+LOWER_GREEN = [50, 155, 200]
 UPPER_GREEN = [80, 255, 255]
 
 # define range of blue color in HSV Color Space
-LOWER_BLUE = [90, 220, 80]
-UPPER_BLUE = [120, 255, 170]
+LOWER_BLUE = [95, 150, 205]
+UPPER_BLUE = [105, 255, 255]
 
 # define range of white color in HLS Color Space
-LOWER_WHITE = [80, 60, 20]
-UPPER_WHITE = [120, 150, 110]
+LOWER_WHITE = [87, 180, 81]
+UPPER_WHITE = [168, 230, 255]
 
 # define range of orange color in HLS Color Space
-LOWER_ORANGE = [10, 40, 200]
-UPPER_ORANGE = [30, 100, 255]
+LOWER_ORANGE = [0, 50, 240]
+UPPER_ORANGE = [20, 255, 255]
 
 # define range of yellow color in HSL Color Space
-LOWER_YELLOW = [30, 50, 160]
-UPPER_YELLOW = [50, 255, 255]
+LOWER_YELLOW = [30, 135, 255]
+UPPER_YELLOW = [55, 190, 255]
 
 # define the ROI size, in pixels
 ROI_SIZE = 20
 
 # default motors params
-MOTOR_DEFAULT_SPEED = 4_500
+MOTOR_DEFAULT_SPEED = 8_000
 MOTOR_SPEED_STEPS = 500
 MOTOR_DEFAULT_ACCELERATION = 200_000
 MOTOR_ACCELERATION_STEPS = 5_000

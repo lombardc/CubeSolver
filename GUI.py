@@ -402,7 +402,7 @@ class MainWindow(QMainWindow):
 
         self.speed_label = QLabel("Motor Speed")
         self.speed_label.setFont(QFont('Arial', 20))
-        self.current_speed = ValueChanger(2500, 15000, MOTOR_DEFAULT_SPEED, MOTOR_SPEED_STEPS, "Steps/s")
+        self.current_speed = ValueChanger(1000, 15000, MOTOR_DEFAULT_SPEED, MOTOR_SPEED_STEPS, "Steps/s")
 
         self.acceleration_label = QLabel("Motor Acceleration")
         self.acceleration_label.setFont(QFont('Arial', 20))
